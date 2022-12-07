@@ -1,8 +1,14 @@
 class AFD:
-    def __init__(self,automatonName,states,alphabet,initialState,acceptingStates,transitions):
-        self.name = automatonName
-        self.states = states
-        self.alphabet = alphabet
-        self.initialState = initialState
-        self.acceptingStates = acceptingStates
-        self.transitions = transitions
+    def __init__(self,nombreAFD,estados,alfabeto,eInicial,eAceptacion,transiciones):
+        self.nombreAFD = nombreAFD
+        self.estados = estados
+        self.alfabeto = alfabeto
+        self.eInicial = eInicial
+        self.eAceptacion = eAceptacion
+        self.transiciones = transiciones
+
+class Transicion:
+    def __init__(self,origen,entrada,destino):
+        self.origen = origen
+        self.entrada = entrada
+        self.destino = destino
