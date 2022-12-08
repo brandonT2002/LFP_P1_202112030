@@ -1,5 +1,6 @@
 from AFD import *
 from GR import *
+from Grafica import *
 
 class Controlador:
     def __init__(self):
@@ -72,3 +73,5 @@ ctrl = Controlador()
 ctrl.leerArchivo()
 ctrl.reconocimientAutomata()
 ctrl.verAutomatas()
+gr = Grafica()
+gr.generarDot(ctrl.automatas[2])
