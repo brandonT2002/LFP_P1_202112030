@@ -1,0 +1,59 @@
+digraph G {
+    graph [labeljust=l labelloc=t];
+    node [shape=circle];
+    fontsize=40
+    //descripcion
+    NodeLabel [shape=none fontsize=18 label = 
+        <
+            AFD_1<br/>
+            Estados: S1, S2, S3 <br align="left"/>
+            Alfabeto: 0, 1<br align="left"/>
+            Estados de Aceptación: S1, S4, S5, S6<br align="left"/>
+            Estado Inicial: S0<br align="left"/>
+            Producciones:<br align="left"/>
+                A,1;B<br align="left"/>
+                A,0;C<br align="left"/>
+                A,1;B<br align="left"/>
+                A,0;C<br align="left"/>
+                A,1;B<br align="left"/>
+                A,0;C<br align="left"/>
+                A,1;B<br align="left"/>
+                A,0;C<br align="left"/>
+                A,1;B<br align="left"/>
+                A,0;C<br align="left"/>
+        >
+    ];
+    rankdir=LR
+    //estados
+    S0;S1;S2;S3;S4;S5;S6;S7;S8;S9;S10;S11;S12;
+    //estados de aceptacion
+    S1 [peripheries=2];
+    S4 [peripheries=2];
+    S5 [peripheries=2];
+    S6 [peripheries=2];
+    S7 [peripheries=2];
+    S8 [peripheries=2];
+    S9 [peripheries=2];
+    S12 [peripheries=2];
+    S11 [peripheries=2];
+    //estado inicial
+    Flecha[shape=rarrow label=""];
+    NodeLabel -> Flecha -> S0 [color=none];
+    //producciones
+    S0 -> S1 [label="\\w"];
+    S1 -> S1 [label="\\w"];
+    S0 -> S2 [label="comilla"];
+    S2 -> S3 [label="\\w | \\s"];
+    S3 -> S3 [label="\\w | \\s"];
+    S3 -> S4 [label="comilla"];
+    S2 -> S4 [label="comilla"];
+    S0 -> S5 [label="<"];
+    S0 -> S6 [label=">"];
+    S0 -> S7 [label="\\d"];
+    S7 -> S7 [label="\\d"];
+    S0 -> S8 [label="-"];
+    S8 -> S9 [label="n"];
+    S8 -> S10 [label="j"];
+    S8 -> S12 [label="n"];
+    S10 -> S11 [label="i | f"];
+}
