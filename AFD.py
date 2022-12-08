@@ -1,11 +1,11 @@
 class AFD:
-    def __init__(self,nombreAFD,estados,alfabeto,eInicial,eAceptacion,transiciones):
-        self.nombreAFD = nombreAFD
-        self.estados = estados
-        self.alfabeto = alfabeto
-        self.eInicial = eInicial
-        self.eAceptacion = eAceptacion
-        self.transiciones = transiciones
+    def __init__(self):
+        self.nombreAFD = None
+        self.estados = None
+        self.alfabeto = None
+        self.eInicial = None
+        self.eAceptacion = None
+        self.transiciones = None
 
 class Transicion:
     def __init__(self,origen,entrada,destino):
