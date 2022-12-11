@@ -36,7 +36,7 @@ class App():
         self.panelDer3.grid_remove()
 
         self.panelOpc()
-        self.cargarArchivo()
+        self.panelCargarArchivo()
         self.root.mainloop()
 
     def panelOpc(self):
@@ -48,19 +48,19 @@ class App():
         self.opciones = tk.Label(master=self.panelIzq,text='Opciones',font=('Roboto Medium',16),background='#2A2D2E',foreground='white')
         self.opciones.grid(row=1,column=0,pady=10,padx=10)
 
-        self.cargar = tk.Button(master=self.panelIzq,text='Cargar Archivo',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1)
+        self.cargar = tk.Button(master=self.panelIzq,text='Cargar Archivo',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.opcion1)
         self.cargar.grid(row=2,column=0,pady=10,padx=20)
 
-        self.crearAFD = tk.Button(master=self.panelIzq,text='Crear AFD',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1)
+        self.crearAFD = tk.Button(master=self.panelIzq,text='Crear AFD',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.opcion2)
         self.crearAFD.grid(row=3,column=0,pady=10,padx=10)
 
-        self.crearGR = tk.Button(master=self.panelIzq,text='Crear GR',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1)
+        self.crearGR = tk.Button(master=self.panelIzq,text='Crear GR',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.opcion3)
         self.crearGR.grid(row=4,column=0,pady=10,padx=10)
 
         self.crearAFD = tk.Button(master=self.panelIzq,text='Salir',font=('Roboto Medium',11),bg='#D35B58',activebackground='#D35B58',foreground='white',activeforeground='white',width=15,height=1,command=quit)
         self.crearAFD.grid(row=9,column=0,pady=10,padx=10)
 
-    def cargarArchivo(self):
+    def panelCargarArchivo(self):
         self.panelDer1.rowconfigure((0,1),weight=1)
         self.panelDer1.rowconfigure(5,weight=10)
         self.panelDer1.columnconfigure((0,1),weight=1)
@@ -76,6 +76,33 @@ class App():
         self.ruta.insert(0,'Ruta')
         self.ruta.configure(disabledbackground='#343638',disabledforeground='white',state='disabled')
         self.ruta.grid(row=1,column=0,columnspan=2,pady=15,padx=20,sticky='nwe')
+
+    def panelCrearAFD(self):
+        self.panelDer2.rowconfigure((0,1,2,3,4),weight=1)
+        self.panelDer2.rowconfigure(5,weight=10)
+        self.panelDer2.columnconfigure((0,1,2,3,4),weight=1)
+        self.panelDer2.columnconfigure(5,weight=0)
+
+    def panelCrearGR(self):
+        self.panelDer3.rowconfigure((0,1,2,3,4),weight=1)
+        self.panelDer3.rowconfigure(5,weight=10)
+        self.panelDer3.columnconfigure((0,1,2,3,4),weight=1)
+        self.panelDer3.columnconfigure(5,weight=0)
+
+    def opcion1(self):
+        self.panelDer2.grid_remove()
+        self.panelDer3.grid_remove()
+        self.panelDer1.grid()
+
+    def opcion2(self):
+        self.panelDer1.grid_remove()
+        self.panelDer3.grid_remove()
+        self.panelDer2.grid()
+
+    def opcion3(self):
+        self.panelDer1.grid_remove()
+        self.panelDer2.grid_remove()
+        self.panelDer3.grid()
 
     def chooseFile(self):
         try:
