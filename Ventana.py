@@ -4,13 +4,14 @@ from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 from idlelib.tooltip import Hovertip
 from ControladorAFD import ControladorAFD
-from AFD import AFD
+from Grafica import Grafica
 
 class App():
     ALTO = 1325
     ANCHO = 600
     def __init__(self):
         self.ctrlAFD = ControladorAFD()
+        self.gr = Grafica()
 
         self.root = tk.Tk()
         self.root.title("Proyecto1 - LFP")
@@ -158,22 +159,15 @@ class App():
         self.cadena.grid(row=8,column=2,columnspan=2,padx=20,pady=(50,10),sticky='we')
         self.agregarNota(self.cadena,'Ingrese una cadena para validar el AFD')
 
-        self.generarReporte = tk.Button(master=self.panelDer2,text='Generar Reporte',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1)
+        self.generarReporte = tk.Button(master=self.panelDer2,text='Generar Reporte',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.generarReporteAFD)
         self.generarReporte.grid(row=9,column=0,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
         self.validarCad = tk.Button(master=self.panelDer2,text='Validar Cadena',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1)
         self.validarCad.grid(row=9,column=2,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
-    def panelCrearGR(self):
-        self.panelDer3.rowconfigure((0,1,2,3,4),weight=1)
-        self.panelDer3.rowconfigure(5,weight=10)
-        self.panelDer3.columnconfigure((0,1,2,3,4),weight=1)
-        self.panelDer3.columnconfigure(5,weight=0)
-
     def agregarAFD(self):
         if self.nombreAFD.get().replace(' ','') == '' or self.estadosAFD.get().replace(' ','') == '' or self.alfabetoAFD.get().replace(' ','') == '' or self.eInicialAFD.get().replace(' ','') == '' or self.eAceptAFD.get().replace(' ','') == '' or self.transiAFD.get().replace(' ','') == '':
-            messagebox.showinfo('Información','Todos los campos son obligatorios')
-            
+            messagebox.showinfo('Información','Todos los campos son obligatorios')  
         else:
             for simbolo in self.alfabetoAFD.get().split(';'):
                 for estado in self.estadosAFD.get().split(';'):
@@ -200,7 +194,6 @@ class App():
                 else:
                     messagebox.showinfo('Información',f"El estado de aceptación {set(self.eAceptAFD.get().split(';')).difference(set(self.estadosAFD.get().split(';')))} no han sido declarado")
             else:
-                #self.ctrlAFD.agregarTransicion(self.transiAFD.get().split(';'))
                 self.ctrlAFD.agregarAFD(self.nombreAFD.get(),self.estadosAFD.get(),self.alfabetoAFD.get(),self.eInicialAFD.get(),self.eAceptAFD.get(),self.transiAFD.get().split(';'))
                 messagebox.showinfo('Información','Autómata creado exitosamente')
                 self.ctrlAFD.verAutomatas()
@@ -209,6 +202,17 @@ class App():
                     self.nombAFD.append(f'{i + 1} - {self.ctrlAFD.automatas[i].nombreAFD}')
                 self.cbAFD.configure(values=self.nombAFD)
                 print('-----------')
+
+    def generarReporteAFD(self):
+        cadena = self.cbAFD.get().split('-')
+        indice = int(cadena[0])
+        self.gr.generarDot(self.ctrlAFD.automatas[indice-1])
+
+    def panelCrearGR(self):
+        self.panelDer3.rowconfigure((0,1,2,3,4),weight=1)
+        self.panelDer3.rowconfigure(5,weight=10)
+        self.panelDer3.columnconfigure((0,1,2,3,4),weight=1)
+        self.panelDer3.columnconfigure(5,weight=0)
 
     def opcion1(self):
         self.panelDer2.grid_remove()
@@ -243,10 +247,13 @@ class App():
                 self.ruta.configure(state='disabled')
                 extension = archivo.split('.')
                 if extension[1] == 'afd':
-                    print('se cargó un autómata')
+                    #print('se cargó un autómata')
                     self.ctrlAFD.leerArchivo(archivo)
                     self.ctrlAFD.reconocimientoAutomata()
                     self.ctrlAFD.verAutomatas()
+                    for i in range(len(self.ctrlAFD.automatas)):
+                        self.nombAFD.append(f'{i + 1}-{self.ctrlAFD.automatas[i].nombreAFD}')
+                    self.cbAFD.configure(values=self.nombAFD)
                 else:
                     print('se cargó una gramática')
         except:

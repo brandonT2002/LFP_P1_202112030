@@ -6,7 +6,6 @@ class ControladorAFD:
     def __init__(self):
         self.automatas = []
         self.gramaticas = []
-        self.transiciones = []
         self.linea = 0
 
     def sacarLinea(self):
@@ -33,8 +32,8 @@ class ControladorAFD:
             self.automata.eAceptacion = self.sacarLinea().split(',')
         elif self.linea == 4:
             self.automata.eInicial = self.sacarLinea()
-        #elif self.linea == 5:
-        #    self.transiciones = []
+        elif self.linea == 5:
+            self.transiciones = []
         if self.linea >= 5:
             transicion = self.sacarLinea().split(';')
             origenEntrada = transicion[0].split(',')
@@ -65,12 +64,6 @@ class ControladorAFD:
 
         self.automatas.append(automata)
 
-    #def agregarTransicion(self,transiciones):
-    #    #self.trnasi = []
-    #    for i in transiciones:
-    #        valor = i.split(',')
-    #        self.trans.append(Transicion(valor[0],valor[1],valor[2]))
-
     def verAutomatas(self):
         for i in range(len(self.automatas)):
             print(f'Nombre: {self.automatas[i].nombreAFD}')
@@ -79,10 +72,9 @@ class ControladorAFD:
             print(f'Estados de Aceptación: {self.automatas[i].eAceptacion}')
             print(f'Estado Inicial: {self.automatas[i].eInicial}')
             print('Transiciones:')
-            for j in range(len(self.transiciones)):
+            for j in range(len(self.automatas[i].transiciones)):
+                #print(f'\tOrigen: {self.automatas[i].transiciones[j].origen} Entrada: {self.automatas[i].transiciones[j].entrada} Destino: {self.automatas[i].transiciones[j].destino}')
                 print(f'\t{self.automatas[i].transiciones[j].__dict__}')
-            for k in range(len(self.automatas[i].transiciones)):
-                print(f'\t{self.automatas[i].transiciones[k].__dict__}')
             print()
 
     def reconocimientoAutomata(self):
@@ -96,7 +88,7 @@ class ControladorAFD:
 
 #ctrl = ControladorAFD()
 #ctrl.leerArchivo()
-#ctrl.reconocimientoAutomata()
+#ctrl.reconocimientAutomata()
 #ctrl.verAutomatas()
 #gr = Grafica()
 #gr.generarDot(ctrl.automatas[2])
