@@ -148,9 +148,10 @@ class App():
         style.theme_use('clam')
         style.configure("TCombobox", fieldbackground= "#343638", background= "#fff", selectforeground='white',activebackground='#343638',activeforeground='black',foreground='white')
 
-        self.cb = ttk.Combobox(master=self.panelDer2,values=['reporte1','reporte2'],font=('Roboto Medium',16))
-        self.cb.grid(row=8,column=0,columnspan=2,padx=20,pady=(50,10),sticky='we')
-        self.cb.set('Seleccione un AFD')
+        self.nombAFD = []
+        self.cbAFD = ttk.Combobox(master=self.panelDer2,values=[],font=('Roboto Medium',16))
+        self.cbAFD.grid(row=8,column=0,columnspan=2,padx=20,pady=(50,10),sticky='we')
+        self.cbAFD.set('Seleccione un AFD')
 
         self.cadena = tk.Entry(master=self.panelDer2,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
         self.cadena.configure(disabledbackground='#343638',disabledforeground='white')
@@ -179,6 +180,18 @@ class App():
                     if str(simbolo) == str(estado):
                         messagebox.showinfo('Información',f'El simbolo {simbolo} es parte de los estados')
                         return
+            transiciones = self.transiAFD.get().split(';')
+            for i in range(len(transiciones)):
+                valores = transiciones[i].split(',')
+                if not valores[1] in self.alfabetoAFD.get().split(';'):
+                    messagebox.showinfo('Información',f'El valor de entrada {valores[1]} no pertenece al alfabeto')
+                    return
+                elif not valores[0] in self.estadosAFD.get().split(';'):
+                    messagebox.showinfo('Información',f'El estado de origen {valores[0]} no ha sido declarado')
+                    return
+                elif not valores[2] in self.estadosAFD.get().split(';'):
+                    messagebox.showinfo('Información',f'El estado de destino {valores[2]} no ha sido declarado')
+                    return
             if not self.eInicialAFD.get() in self.estadosAFD.get().split(';'):
                 messagebox.showinfo('Información',f'El estado inicial {self.eInicialAFD.get()} no es parte de los estados')
             elif set(self.eAceptAFD.get().split(';')).difference(set(self.estadosAFD.get().split(';'))):
@@ -191,6 +204,10 @@ class App():
                 self.ctrlAFD.agregarAFD(self.nombreAFD.get(),self.estadosAFD.get(),self.alfabetoAFD.get(),self.eInicialAFD.get(),self.eAceptAFD.get(),self.transiAFD.get().split(';'))
                 messagebox.showinfo('Información','Autómata creado exitosamente')
                 self.ctrlAFD.verAutomatas()
+                self.limpiarForm()
+                for i in range(len(self.ctrlAFD.automatas)):
+                    self.nombAFD.append(f'{i + 1} - {self.ctrlAFD.automatas[i].nombreAFD}')
+                self.cbAFD.configure(values=self.nombAFD)
                 print('-----------')
 
     def opcion1(self):
