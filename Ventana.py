@@ -1,12 +1,17 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 from idlelib.tooltip import Hovertip
+from ControladorAFD import ControladorAFD
+from AFD import AFD
 
 class App():
     ALTO = 1325
     ANCHO = 600
     def __init__(self):
+        self.ctrlAFD = ControladorAFD()
+
         self.root = tk.Tk()
         self.root.title("Proyecto1 - LFP")
         self.root.geometry(f'{App.ALTO}x{App.ANCHO}')
@@ -39,7 +44,6 @@ class App():
         self.panelCargarArchivo()
         self.panelCrearAFD()
         self.panelCrearGR()
-        self.root.mainloop()
 
     def panelOpc(self):
         self.panelIzq.grid_rowconfigure(0,minsize=10)
@@ -86,7 +90,7 @@ class App():
         self.panelDer2.columnconfigure(4,weight=0)
 
         title1 = tk.Label(master=self.panelDer2,text='Crear Autómata Finito Determinista',font=('Roboto Medium',20),background='#2A2D2E',foreground='white')
-        title1.grid(row=0,column=0,columnspan=4,padx=20,sticky='w')
+        title1.grid(row=0,column=0,columnspan=4,pady=(15,0),padx=20,sticky='w')
 
         nombre = tk.Label(master=self.panelDer2,text='Nombre: ',font=('Roboto Medium',16),background='#2A2D2E',foreground='white')
         nombre.grid(row=1,column=0,padx=20,sticky='nw')
@@ -117,6 +121,7 @@ class App():
         self.eInicialAFD = tk.Entry(master=self.panelDer2,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
         self.eInicialAFD.configure(disabledbackground='#343638',disabledforeground='white')
         self.eInicialAFD.grid(row=4,column=2,columnspan=2,padx=20,sticky='nwe')
+        self.agregarNota(self.eInicialAFD,'El estado inicial debe existir en los estados')
 
         eAcept = tk.Label(master=self.panelDer2,text='Estados de Aceptación: ',font=('Roboto Medium',16),background='#2A2D2E',foreground='white')
         eAcept.grid(row=5,column=0,padx=20,sticky='nw')
@@ -134,8 +139,10 @@ class App():
         self.transiAFD.grid(row=6,column=2,columnspan=2,padx=20,sticky='nwe')
         self.agregarNota(self.transiAFD,'Ejemplo: A,0,B;A,1,C - origen,entrada,destino ; origen,entrada,destino')
 
-        self.guardarAFD = tk.Button(master=self.panelDer2,text='Guardar AFD',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1)
+        self.guardarAFD = tk.Button(master=self.panelDer2,text='Guardar AFD',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.agregarAFD)
         self.guardarAFD.grid(row=7,column=0,columnspan=4,pady=(20,0),padx=20,sticky='nwe')
+
+        # ====================
 
         style= ttk.Style()
         style.theme_use('clam')
@@ -161,6 +168,30 @@ class App():
         self.panelDer3.rowconfigure(5,weight=10)
         self.panelDer3.columnconfigure((0,1,2,3,4),weight=1)
         self.panelDer3.columnconfigure(5,weight=0)
+
+    def agregarAFD(self):
+        if self.nombreAFD.get().replace(' ','') == '' or self.estadosAFD.get().replace(' ','') == '' or self.alfabetoAFD.get().replace(' ','') == '' or self.eInicialAFD.get().replace(' ','') == '' or self.eAceptAFD.get().replace(' ','') == '' or self.transiAFD.get().replace(' ','') == '':
+            messagebox.showinfo('Información','Todos los campos son obligatorios')
+            
+        else:
+            for simbolo in self.alfabetoAFD.get().split(';'):
+                for estado in self.estadosAFD.get().split(';'):
+                    if str(simbolo) == str(estado):
+                        messagebox.showinfo('Información',f'El simbolo {simbolo} es parte de los estados')
+                        return
+            if not self.eInicialAFD.get() in self.estadosAFD.get().split(';'):
+                messagebox.showinfo('Información',f'El estado inicial {self.eInicialAFD.get()} no es parte de los estados')
+            elif set(self.eAceptAFD.get().split(';')).difference(set(self.estadosAFD.get().split(';'))):
+                if len(set(self.eAceptAFD.get().split(';')).difference(set(self.estadosAFD.get().split(';')))) >= 2:
+                    messagebox.showinfo('Información',f"Los estados de aceptación {set(self.eAceptAFD.get().split(';')).difference(set(self.estadosAFD.get().split(';')))} no han sido declarados")
+                else:
+                    messagebox.showinfo('Información',f"El estado de aceptación {set(self.eAceptAFD.get().split(';')).difference(set(self.estadosAFD.get().split(';')))} no han sido declarado")
+            else:
+                #self.ctrlAFD.agregarTransicion(self.transiAFD.get().split(';'))
+                self.ctrlAFD.agregarAFD(self.nombreAFD.get(),self.estadosAFD.get(),self.alfabetoAFD.get(),self.eInicialAFD.get(),self.eAceptAFD.get(),self.transiAFD.get().split(';'))
+                messagebox.showinfo('Información','Autómata creado exitosamente')
+                self.ctrlAFD.verAutomatas()
+                print('-----------')
 
     def opcion1(self):
         self.panelDer2.grid_remove()
@@ -196,15 +227,26 @@ class App():
                 extension = archivo.split('.')
                 if extension[1] == 'afd':
                     print('se cargó un autómata')
+                    self.ctrlAFD.leerArchivo(archivo)
+                    self.ctrlAFD.reconocimientoAutomata()
+                    self.ctrlAFD.verAutomatas()
                 else:
                     print('se cargó una gramática')
-            self.tokens = None
-            self.errores = None
         except:
             pass
 
     def agregarNota(self,componente,texto):
         self.myTip = Hovertip(componente,f'\n     {texto}     \n')
 
+    def limpiarForm(self):
+        self.nombreAFD.delete(0,'end')
+        self.estadosAFD.delete(0,'end')
+        self.alfabetoAFD.delete(0,'end')
+        self.eInicialAFD.delete(0,'end')
+        self.eAceptAFD.delete(0,'end')
+        self.transiAFD.delete(0,'end')
+
 if __name__ == '__main__':
     app = App()
+    #self.root.mainloop()
+    app.root.mainloop()
