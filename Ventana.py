@@ -4,6 +4,7 @@ from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 from idlelib.tooltip import Hovertip
 from ControladorAFD import ControladorAFD
+from ControladorGR import ControladorGR
 from Grafica import Grafica
 
 class App():
@@ -11,6 +12,7 @@ class App():
     ANCHO = 600
     def __init__(self):
         self.ctrlAFD = ControladorAFD()
+        self.ctrlGR = ControladorGR()
         self.gr = Grafica()
 
         self.root = tk.Tk()
@@ -329,8 +331,10 @@ class App():
                     for i in range(len(self.ctrlAFD.automatas)):
                         self.nombAFD.append(f'{i + 1}-{self.ctrlAFD.automatas[i].nombreAFD}')
                     self.cbAFD.configure(values=self.nombAFD)
-                else:
-                    print('se cargó una gramática')
+                elif extension[1] == 'grm':
+                    self.ctrlGR.leerArchivo(archivo)
+                    self.ctrlGR.reconocimientoGramatica()
+                    self.ctrlGR.verGramaticas()
         except:
             pass
 
