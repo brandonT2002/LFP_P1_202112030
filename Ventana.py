@@ -154,16 +154,16 @@ class App():
         self.cbAFD.grid(row=8,column=0,columnspan=2,padx=20,pady=(50,10),sticky='we')
         self.cbAFD.set('Seleccione un AFD')
 
-        self.cadena = tk.Entry(master=self.panelDer2,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
-        self.cadena.configure(disabledbackground='#343638',disabledforeground='white')
-        self.cadena.grid(row=8,column=2,columnspan=2,padx=20,pady=(50,10),sticky='we')
-        self.agregarNota(self.cadena,'Ingrese una cadena para validar el AFD')
+        self.cadenaAFD = tk.Entry(master=self.panelDer2,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
+        self.cadenaAFD.configure(disabledbackground='#343638',disabledforeground='white')
+        self.cadenaAFD.grid(row=8,column=2,columnspan=2,padx=20,pady=(50,10),sticky='we')
+        self.agregarNota(self.cadenaAFD,'Ingrese una cadena para validar el AFD')
 
-        self.generarReporte = tk.Button(master=self.panelDer2,text='Generar Reporte',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.generarReporteAFD)
-        self.generarReporte.grid(row=9,column=0,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
+        self.generarReporteAFD = tk.Button(master=self.panelDer2,text='Generar Reporte',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.generarReporteAFD)
+        self.generarReporteAFD.grid(row=9,column=0,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
-        self.validarCad = tk.Button(master=self.panelDer2,text='Validar Cadena',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1)
-        self.validarCad.grid(row=9,column=2,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
+        self.validarCadAFD = tk.Button(master=self.panelDer2,text='Validar Cadena',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1)
+        self.validarCadAFD.grid(row=9,column=2,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
     def agregarAFD(self):
         if self.nombreAFD.get().replace(' ','') == '' or self.estadosAFD.get().replace(' ','') == '' or self.alfabetoAFD.get().replace(' ','') == '' or self.eInicialAFD.get().replace(' ','') == '' or self.eAceptAFD.get().replace(' ','') == '' or self.transiAFD.get().replace(' ','') == '':
@@ -174,6 +174,10 @@ class App():
                     if str(simbolo) == str(estado):
                         messagebox.showinfo('Información',f'El simbolo {simbolo} es parte de los estados')
                         return
+            dup = [x for i, x in enumerate(self.alfabetoAFD.get().split(';')) if x in self.alfabetoAFD.get().split(';')[:i]]
+            if len(dup) > 0:
+                messagebox.showinfo('Información',f'El alfabeto contiene elementos repetidos {dup}')
+                return
             transiciones = self.transiAFD.get().split(';')
             for i in range(len(transiciones)):
                 valores = transiciones[i].split(',')
@@ -213,10 +217,77 @@ class App():
             self.cbAFD.set('Seleccione un AFD')
 
     def panelCrearGR(self):
-        self.panelDer3.rowconfigure((0,1,2,3,4),weight=1)
-        self.panelDer3.rowconfigure(5,weight=10)
-        self.panelDer3.columnconfigure((0,1,2,3,4),weight=1)
-        self.panelDer3.columnconfigure(5,weight=0)
+        self.panelDer3.rowconfigure((0,1,2,3,4,5,6,7,8,9),weight=1)
+        self.panelDer3.rowconfigure(10,weight=10)
+        self.panelDer3.columnconfigure((0,1,2,3),weight=1)
+        self.panelDer3.columnconfigure(4,weight=0)
+
+        title1 = tk.Label(master=self.panelDer3,text='Crear Gramática Regular',font=('Roboto Medium',20),background='#2A2D2E',foreground='white')
+        title1.grid(row=0,column=0,columnspan=4,pady=(15,0),padx=20,sticky='w')
+
+        nombre = tk.Label(master=self.panelDer3,text='Nombre: ',font=('Roboto Medium',16),background='#2A2D2E',foreground='white')
+        nombre.grid(row=1,column=0,padx=20,sticky='nw')
+
+        self.nombreGR = tk.Entry(master=self.panelDer3,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
+        self.nombreGR.configure(disabledbackground='#343638',disabledforeground='white')
+        self.nombreGR.grid(row=2,column=0,columnspan=2,padx=20,sticky='nwe')
+
+        noTerminales = tk.Label(master=self.panelDer3,text='No Terminales: ',font=('Roboto Medium',16),background='#2A2D2E',foreground='white')
+        noTerminales.grid(row=1,column=2,padx=20,sticky='nw')
+
+        self.noTerminalesGR = tk.Entry(master=self.panelDer3,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
+        self.noTerminalesGR.configure(disabledbackground='#343638',disabledforeground='white')
+        self.noTerminalesGR.grid(row=2,column=2,columnspan=2,padx=20,sticky='nwe')
+        self.agregarNota(self.estadosAFD,'Ejemplo: A;B;C;D (Separados por punto y coma)')
+
+        terminales = tk.Label(master=self.panelDer3,text='Terminales: ',font=('Roboto Medium',16),background='#2A2D2E',foreground='white')
+        terminales.grid(row=3,column=0,padx=20,sticky='nw')
+
+        self.terminalesGR = tk.Entry(master=self.panelDer3,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
+        self.terminalesGR.configure(disabledbackground='#343638',disabledforeground='white')
+        self.terminalesGR.grid(row=4,column=0,columnspan=2,padx=20,sticky='nwe')
+        self.agregarNota(self.terminalesGR,'Ejemplo: 0;1;2 (Separados por punto y coma)')
+
+        noTerminalInicial = tk.Label(master=self.panelDer3,text='No Terminal Inicial: ',font=('Roboto Medium',16),background='#2A2D2E',foreground='white')
+        noTerminalInicial.grid(row=3,column=2,padx=20,sticky='nw')
+
+        self.noTermIniGR = tk.Entry(master=self.panelDer3,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
+        self.noTermIniGR.configure(disabledbackground='#343638',disabledforeground='white')
+        self.noTermIniGR.grid(row=4,column=2,columnspan=2,padx=20,sticky='nwe')
+        self.agregarNota(self.eInicialAFD,'El estado inicial debe existir en los estados')
+
+        producciones = tk.Label(master=self.panelDer3,text='Producciones: ',font=('Roboto Medium',16),background='#2A2D2E',foreground='white')
+        producciones.grid(row=5,column=0,padx=20,sticky='nw')
+
+        self.producGR = tk.Entry(master=self.panelDer3,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
+        self.producGR.configure(disabledbackground='#343638',disabledforeground='white')
+        self.producGR.grid(row=6,column=0,columnspan=4,padx=20,sticky='nwe')
+        self.agregarNota(self.transiAFD,'Ejemplo: A,0,B;A,1,C - origen,entrada,destino ; origen,entrada,destino')
+
+        self.guardarGR = tk.Button(master=self.panelDer3,text='Guardar GR',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.agregarAFD)
+        self.guardarGR.grid(row=7,column=0,columnspan=4,pady=(20,0),padx=20,sticky='nwe')
+
+        # ====================
+
+        style= ttk.Style()
+        style.theme_use('clam')
+        style.configure("TCombobox", fieldbackground= "#343638", background= "#fff", selectforeground='white',activebackground='#343638',activeforeground='black',foreground='white')
+
+        self.nombGR = []
+        self.cbGR = ttk.Combobox(master=self.panelDer3,values=[],font=('Roboto Medium',16))
+        self.cbGR.grid(row=8,column=0,columnspan=2,padx=20,pady=(50,10),sticky='we')
+        self.cbGR.set('Seleccione un AFD')
+
+        self.cadenaGR = tk.Entry(master=self.panelDer3,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
+        self.cadenaGR.configure(disabledbackground='#343638',disabledforeground='white')
+        self.cadenaGR.grid(row=8,column=2,columnspan=2,padx=20,pady=(50,10),sticky='we')
+        self.agregarNota(self.cadenaGR,'Ingrese una cadena para validar el AFD')
+
+        self.generarReporteGR = tk.Button(master=self.panelDer3,text='Generar Reporte',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.generarReporteAFD)
+        self.generarReporteGR.grid(row=9,column=0,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
+
+        self.validarCadGR = tk.Button(master=self.panelDer3,text='Validar Cadena',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1)
+        self.validarCadGR.grid(row=9,column=2,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
     def opcion1(self):
         self.panelDer2.grid_remove()
