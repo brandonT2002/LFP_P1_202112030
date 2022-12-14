@@ -204,9 +204,13 @@ class App():
                 print('-----------')
 
     def generarReporteAFD(self):
-        cadena = self.cbAFD.get().split('-')
-        indice = int(cadena[0])
-        self.gr.generarDot(self.ctrlAFD.automatas[indice-1])
+        if self.cbAFD.get() == 'Seleccione un AFD':
+            messagebox.showinfo('Información','No se ha seleccionado ningún AFD')
+        else:
+            cadena = self.cbAFD.get().split('-')
+            indice = int(cadena[0])
+            self.gr.generarDot(self.ctrlAFD.automatas[indice-1])
+            self.cbAFD.set('Seleccione un AFD')
 
     def panelCrearGR(self):
         self.panelDer3.rowconfigure((0,1,2,3,4),weight=1)
