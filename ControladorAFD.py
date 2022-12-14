@@ -1,11 +1,9 @@
 from AFD import *
-from GR import *
 from Grafica import *
 
 class ControladorAFD:
     def __init__(self):
         self.automatas = []
-        self.gramaticas = []
         self.linea = 0
 
     def sacarLinea(self):
