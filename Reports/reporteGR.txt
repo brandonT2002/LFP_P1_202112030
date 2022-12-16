@@ -1,0 +1,35 @@
+digraph G {
+graph [labelloc=t];
+node [shape=circle];
+fontsize=30;
+label = "Gramatica-1";NodeLabel [shape=none fontsize=18 label = 
+<
+No terminales: A B C D<br align="left"/>
+Terminales: 0 1<br align="left"/>
+No terminal inicial: A<br align="left"/>
+Producciones:<br align="left"/>
+A &#62; 0 B<br align="left"/>
+A &#62; 1 C<br align="left"/>
+B &#62; 0 A<br align="left"/>
+B &#62; 1 D<br align="left"/>
+C &#62; 0 D<br align="left"/>
+C &#62; 1 A<br align="left"/>
+C &#62; $ <br align="left"/>
+D &#62; 0 C<br align="left"/>
+D &#62; 1 B<br align="left"/>
+>
+];
+rankdir=LR;
+A;B;C;D;
+C[peripheries=2];
+Flecha[shape=rarrow label=""];
+NodeLabel -> Flecha -> A [color=none];
+A -> B [label="0"];
+A -> C [label="1"];
+B -> A [label="0"];
+B -> D [label="1"];
+C -> D [label="0"];
+C -> A [label="1"];
+D -> C [label="0"];
+D -> B [label="1"];
+}
