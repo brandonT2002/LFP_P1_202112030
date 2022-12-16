@@ -35,6 +35,12 @@ class ControladorAFD:
             transicion = self.sacarLinea().split(';')
             origenEntrada = transicion[0].split(',')
             self.transiciones.append(Transicion(origenEntrada[0],origenEntrada[1],transicion[1]))
+            if not self.existeEstado(self.automata.path,origenEntrada[0]):
+                self.automata.path[origenEntrada[0]] = {}
+            try:
+                self.automata.path[origenEntrada[0]][origenEntrada[1]] = transicion[1]
+            except:
+                self.automata.path[origenEntrada[0]][origenEntrada[1]] = 'ACEPTADO'
         self.linea += 1
         if self.verLinea() == '%' or not self.verLinea():
             self.automata.transiciones = self.transiciones
@@ -43,8 +49,14 @@ class ControladorAFD:
             self.linea = 0
         if self.verLinea():
             self.identificarElementos()
+    
+    def existeEstado(self,dic,nuevo):
+        for estado in dic:
+            if nuevo == estado:
+                return True
+        return False
 
-    def agregarAFD(self,nombre,estados,alfabeto,eInicial,eAcept,transiciones):
+    def agregarAFD(self,nombre,estados,alfabeto,eInicial,eAcept,transiciones,diccionario):
         trans = []
         automata = AFD()
         automata.nombreAFD = nombre
@@ -58,8 +70,19 @@ class ControladorAFD:
             trans.append(Transicion(valor[0],valor[1],valor[2]))
 
         automata.transiciones = trans
+        automata.path = diccionario
 
         self.automatas.append(automata)
+
+    def cadenaMinima(self,cadenas,diccionario,eIni,eAcept,alf,cadena):
+        if eIni in eAcept:
+            cadenas.append(cadena)
+            return
+        destinos = diccionario[eIni] 
+        if len(cadenas) > 10 or (len(cadenas) > 0 and (len(cadena) > 1 and len(cadena) > len(cadenas[0]))):
+            return
+        for entrada in alf:
+            self.cadenaMinima(cadenas,diccionario,destinos[entrada],eAcept,alf,cadena+entrada)
 
     def verAutomatas(self):
         for i in range(len(self.automatas)):
@@ -68,6 +91,7 @@ class ControladorAFD:
             print(f'Alfabeto: {self.automatas[i].alfabeto}')
             print(f'Estados de Aceptación: {self.automatas[i].eAceptacion}')
             print(f'Estado Inicial: {self.automatas[i].eInicial}')
+            print(self.automatas[i].path)
             print('Transiciones:')
             for j in range(len(self.automatas[i].transiciones)):
                 #print(f'\tOrigen: {self.automatas[i].transiciones[j].origen} Entrada: {self.automatas[i].transiciones[j].entrada} Destino: {self.automatas[i].transiciones[j].destino}')

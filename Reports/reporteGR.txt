@@ -2,7 +2,7 @@ digraph G {
 graph [labelloc=t];
 node [shape=circle];
 fontsize=30;
-label = "asdf";NodeLabel [shape=none fontsize=18 label = 
+label = "GRAMATICA R";NodeLabel [shape=none fontsize=18 label = 
 <
 No terminales: A B C D<br align="left"/>
 Terminales: 0 1<br align="left"/>
@@ -14,7 +14,7 @@ B &#62; 0 A<br align="left"/>
 B &#62; 1 D<br align="left"/>
 C &#62; 0 D<br align="left"/>
 C &#62; 1 A<br align="left"/>
-C &#62; $ ACEPTADO<br align="left"/>
+C &#62; $<br align="left"/>
 D &#62; 0 C<br align="left"/>
 D &#62; 1 B<br align="left"/>
 >

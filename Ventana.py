@@ -230,7 +230,7 @@ class App():
                 else:
                     messagebox.showinfo('Información',f"El estado de aceptación {set(self.eAceptAFD.get().split(';')).difference(set(self.estadosAFD.get().split(';')))} no han sido declarado")
             else:
-                self.ctrlAFD.agregarAFD(self.nombreAFD.get(),self.estadosAFD.get(),self.alfabetoAFD.get(),self.eInicialAFD.get(),self.eAceptAFD.get(),self.transiAFD.get().split(';'))
+                self.ctrlAFD.agregarAFD(self.nombreAFD.get(),self.estadosAFD.get(),self.alfabetoAFD.get(),self.eInicialAFD.get(),self.eAceptAFD.get(),self.transiAFD.get().split(';'),self.dic)
                 messagebox.showinfo('Información','Autómata creado exitosamente')
                 #self.ctrlAFD.verAutomatas()
                 self.limpiarFormAFD()
@@ -244,7 +244,9 @@ class App():
         else:
             cadena = self.cbAFD.get().split('-')
             indice = int(cadena[0])
-            self.gr.generarDotAFD(self.ctrlAFD.automatas[indice - 1])
+            cadenas = []
+            self.ctrlAFD.cadenaMinima(cadenas,self.ctrlAFD.automatas[indice - 1].path,self.ctrlAFD.automatas[indice - 1].eInicial,self.ctrlAFD.automatas[indice - 1].eAceptacion,self.ctrlAFD.automatas[indice - 1].alfabeto,'')
+            self.gr.generarDotAFD(self.ctrlAFD.automatas[indice - 1],cadenas[0])
             self.cbAFD.set('Seleccione un Autómata')
 
     def validarCadenaAFD(self):
@@ -464,7 +466,7 @@ class App():
                     #print('se cargó un autómata')
                     self.ctrlAFD.leerArchivo(archivo)
                     self.ctrlAFD.reconocimientoAutomata()
-                    self.ctrlAFD.verAutomatas()
+                    #self.ctrlAFD.verAutomatas()
                     for i in range(len(self.ctrlAFD.automatas)):
                         self.nombAFD.append(f'{i + 1}-{self.ctrlAFD.automatas[i].nombreAFD}')
                     self.cbAFD.configure(values=self.nombAFD)

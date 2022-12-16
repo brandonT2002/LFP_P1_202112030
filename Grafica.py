@@ -4,7 +4,7 @@ import os
 import webbrowser
 
 class Grafica:
-    def generarDotAFD(self,automata : AFD):
+    def generarDotAFD(self,automata : AFD,cadenaMinima):
         dot = 'digraph G {\ngraph [labelloc=t];\nnode [shape=circle];\nfontsize=30;\nlabel = "' + automata.nombreAFD + '";NodeLabel [shape=none fontsize=18 label = \n<'
 
         elementos = ''
@@ -24,6 +24,7 @@ class Grafica:
         elementos = ''
         for produccion in automata.transiciones:
             elementos += f'\n{produccion.origen}, {produccion.entrada}; {produccion.destino}<br align="left"/>'
+        elementos += f'\nCadena mínima: {cadenaMinima}<br align="left"/>'
         dot += f'{elementos}\n>\n];'
         dot += '\nrankdir=LR;\n'  
 
