@@ -215,7 +215,7 @@ class App():
         else:
             cadena = self.cbAFD.get().split('-')
             indice = int(cadena[0])
-            self.gr.generarDot(self.ctrlAFD.automatas[indice-1])
+            self.gr.generarDotAFD(self.ctrlAFD.automatas[indice-1])
             self.cbAFD.set('Seleccione un AFD')
 
     def panelCrearGR(self):
