@@ -161,7 +161,7 @@ class App():
         self.cadenaAFD.grid(row=8,column=2,columnspan=2,padx=20,pady=(50,10),sticky='we')
         self.agregarNota(self.cadenaAFD,'Ingrese una cadena para validar el AFD')
 
-        self.generarReporteAFD = tk.Button(master=self.panelDer2,text='Generar Reporte',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.generarReporteAFD)
+        self.generarReporteAFD = tk.Button(master=self.panelDer2,text='Generar Reporte',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.generarReportePdfAFD)
         self.generarReporteAFD.grid(row=9,column=0,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
         self.validarCadAFD = tk.Button(master=self.panelDer2,text='Validar Cadena',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1)
@@ -202,21 +202,20 @@ class App():
             else:
                 self.ctrlAFD.agregarAFD(self.nombreAFD.get(),self.estadosAFD.get(),self.alfabetoAFD.get(),self.eInicialAFD.get(),self.eAceptAFD.get(),self.transiAFD.get().split(';'))
                 messagebox.showinfo('Información','Autómata creado exitosamente')
-                self.ctrlAFD.verAutomatas()
+                #self.ctrlAFD.verAutomatas()
                 self.limpiarFormAFD()
                 for i in range(len(self.ctrlAFD.automatas)):
                     self.nombAFD.append(f'{i + 1} - {self.ctrlAFD.automatas[i].nombreAFD}')
                 self.cbAFD.configure(values=self.nombAFD)
-                print('-----------')
 
-    def generarReporteAFD(self):
+    def generarReportePdfAFD(self):
         if self.cbAFD.get() == 'Seleccione un AFD':
-            messagebox.showinfo('Información','No se ha seleccionado ningún AFD')
+            messagebox.showinfo('Información','No se ha seleccionado ningún Autómata')
         else:
             cadena = self.cbAFD.get().split('-')
             indice = int(cadena[0])
-            self.gr.generarDotAFD(self.ctrlAFD.automatas[indice-1])
-            self.cbAFD.set('Seleccione un AFD')
+            self.gr.generarDotAFD(self.ctrlAFD.automatas[indice - 1])
+            self.cbAFD.set('Seleccione un Autómata')
 
     def panelCrearGR(self):
         self.panelDer3.rowconfigure((0,1,2,3,4,5,6,7,8,9),weight=1)
@@ -278,14 +277,14 @@ class App():
         self.nombGR = []
         self.cbGR = ttk.Combobox(master=self.panelDer3,values=[],font=('Roboto Medium',16))
         self.cbGR.grid(row=8,column=0,columnspan=2,padx=20,pady=(50,10),sticky='we')
-        self.cbGR.set('Seleccione un AFD')
+        self.cbGR.set('Seleccione una GR')
 
         self.cadenaGR = tk.Entry(master=self.panelDer3,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
         self.cadenaGR.configure(disabledbackground='#343638',disabledforeground='white')
         self.cadenaGR.grid(row=8,column=2,columnspan=2,padx=20,pady=(50,10),sticky='we')
         self.agregarNota(self.cadenaGR,'Ingrese una cadena para validar el AFD')
 
-        self.generarReporteGR = tk.Button(master=self.panelDer3,text='Generar Reporte',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.generarReporteAFD)
+        self.generarReporteGR = tk.Button(master=self.panelDer3,text='Generar Reporte',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.generarReportePdfGR)
         self.generarReporteGR.grid(row=9,column=0,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
         self.validarCadGR = tk.Button(master=self.panelDer3,text='Validar Cadena',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1)
@@ -361,8 +360,20 @@ class App():
             
             self.ctrlGR.agregarGramatica(self.nombreGR.get(),self.noTerminalesGR.get(),self.terminalesGR.get(),self.noTermIniGR.get(),dic)
             messagebox.showinfo('Información','Gramática creado exitosamente')
-            self.ctrlGR.verGramaticas()
+            #self.ctrlGR.verGramaticas()
             self.limpiarFormGR()
+            for i in range(len(self.ctrlGR.gramaticas)):
+                self.nombGR.append(f'{i + 1} - {self.ctrlGR.gramaticas[i].nombreGR}')
+            self.cbGR.configure(values=self.nombGR)
+
+    def generarReportePdfGR(self):
+        if self.cbGR.get() == 'Seleccione una GR':
+            messagebox.showinfo('Información','No se ha seleccionado ninguna gramática')
+        else:
+            cadena = self.cbGR.get().split('-')
+            indice = int(cadena[0])
+            self.gr.generarDotGR(self.ctrlGR.gramaticas[indice - 1])
+            self.cbGR.set('Seleccione una Gramática')
 
     def opcion1(self):
         self.panelDer2.grid_remove()
