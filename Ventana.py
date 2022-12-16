@@ -266,7 +266,7 @@ class App():
         self.producGR.grid(row=6,column=0,columnspan=4,padx=20,sticky='nwe')
         self.agregarNota(self.transiAFD,'Ejemplo: A,0,B;A,1,C - origen,entrada,destino ; origen,entrada,destino')
 
-        self.guardarGR = tk.Button(master=self.panelDer3,text='Guardar GR',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.agregarAFD)
+        self.guardarGR = tk.Button(master=self.panelDer3,text='Guardar GR',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.agregarGR)
         self.guardarGR.grid(row=7,column=0,columnspan=4,pady=(20,0),padx=20,sticky='nwe')
 
         # ====================
@@ -290,6 +290,74 @@ class App():
 
         self.validarCadGR = tk.Button(master=self.panelDer3,text='Validar Cadena',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1)
         self.validarCadGR.grid(row=9,column=2,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
+
+    def agregarGR(self):
+        if self.nombreGR.get().replace(' ','') == '' or self.noTerminalesGR.get().replace(' ','') == '' or self.terminalesGR.get().replace(' ','') == '' or self.noTermIniGR.get().replace(' ','') == '' or self.producGR.get().replace(' ','') == '':
+            messagebox.showinfo('Información','Todos los campos son obligatorios')  
+        else:
+            dup = []
+            dup = [x for i, x in enumerate(self.noTerminalesGR.get().split(';')) if x in self.noTerminalesGR.get().split(';')[:i]]
+            if len(dup) > 0:
+                messagebox.showinfo('Información',f'Los no terminales contienen elementos repetidos {dup}')
+                return
+            for estado in self.noTerminalesGR.get().split(';'):
+                for simbolo in self.terminalesGR.get().split(';'):
+                    if str(estado) == str(simbolo):
+                        messagebox.showinfo('Información',f'El terminal {simbolo} es parte de los no terminales')
+                        return
+            dup = []
+            dup = [x for i, x in enumerate(self.terminalesGR.get().split(';')) if x in self.terminalesGR.get().split(';')[:i]]
+            if len(dup) > 0:
+                messagebox.showinfo('Información',f'Los terminales contienen elementos repetidos {dup}')
+                return
+
+            #A > 0 B | 1 C;B > 0 A | 1 D;C > 0 D | 1 A | $;D > 0 C | 1 B
+            dic = {}
+            producciones = self.producGR.get().split(';')
+            for produccion in producciones:
+                produccion = produccion.split('>')
+                produccion[0] = produccion[0].replace(' ','')
+                expresiones = produccion[1].split('|')
+                dicExp = {}
+                for expresion in expresiones:
+                    if expresion[0] == ' ':
+                        expresion = ''.join(list(expresion)[1:])
+                    if expresion[len(expresion) - 1] == ' ':
+                        expresion = ''.join(list(expresion)[:len(expresion) - 1])
+                    expresion = expresion.split( )
+                    if len(expresion) == 2:
+                        dicExp[expresion[0]] = expresion[1]
+                    elif len(expresion) == 1 and expresion[0] == '$':
+                        dicExp[expresion[0]] = 'ACEPTADO'
+                dic[produccion[0]] = dicExp
+            #print(dic)
+            noTerm = []
+            termin = []
+            eAcept = []
+            for estado,value in dic.items():
+                noTerm.append(estado)
+                for entrada,destino in value.items():
+                    if entrada != '$':
+                        if not entrada in termin:
+                            termin.append(entrada)
+                    elif entrada == '$':
+                        eAcept.append(estado)
+            for estado,value in dic.items():
+                for entrada,destino in value.items():
+                    if entrada != '$':
+                        if not entrada in termin:
+                            termin.append(entrada)
+                        elif not destino in noTerm:
+                            noTerm.append(destino)
+
+            for estado in noTerm:
+                if not estado in self.noTerminalesGR.get().split(';'):
+                    messagebox.showinfo('Información',f'El no terminal {estado} no han sido declarado')
+                    return
+            for entrada in termin:
+                if not entrada in self.terminalesGR.get().split(';'):
+                    messagebox.showinfo('Información',f'El terminal {entrada} no han sido declarado')
+                    return
 
     def opcion1(self):
         self.panelDer2.grid_remove()
@@ -335,6 +403,8 @@ class App():
                     self.ctrlGR.leerArchivo(archivo)
                     self.ctrlGR.reconocimientoGramatica()
                     self.ctrlGR.verGramaticas()
+                else:
+                    pass
         except:
             pass
 

@@ -45,6 +45,22 @@ class ControladorGR:
         if self.verLinea():
             self.identificarElementos()
 
+    def agregarGramatica(self,nombre,noTerminales,terminales,noTermIni,producciones):
+        prod = []
+        gramatica = GR()
+        gramatica.nombreGR = nombre
+        gramatica.noTerminales = noTerminales.split(';')
+        gramatica.terminales = terminales.split(';')
+        gramatica.noTerminalInicial = noTermIni
+        
+        for i in producciones:
+            valor = i.split(' ')
+            prod.append(Produccion(producciones[0],valor[0],valor[1]))
+
+        gramatica.producciones = prod
+
+        self.gramaticas.append(gramatica)
+
     def verGramaticas(self):
         for i in range(len(self.gramaticas)):
             print(f'Nombre: {self.gramaticas[i].nombreGR}')
@@ -60,11 +76,11 @@ class ControladorGR:
         self.entrada = self.entrada.split('\n')
         self.identificarElementos()
 
-    def leerArchivo(self):
-        ruta = 'Gramatica.grm'
+    def leerArchivo(self,ruta):
+        #ruta = 'Gramatica.grm'
         self.entrada = open(ruta,encoding='utf-8').read()
 
-ctrl = ControladorGR()
-ctrl.leerArchivo()
-ctrl.reconocimientoGramatica()
-ctrl.verGramaticas()
+#ctrl = ControladorGR()
+#ctrl.leerArchivo()
+#ctrl.reconocimientoGramatica()
+#ctrl.verGramaticas()
