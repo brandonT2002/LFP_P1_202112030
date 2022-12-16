@@ -240,7 +240,7 @@ class App():
         self.noTerminalesGR = tk.Entry(master=self.panelDer3,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
         self.noTerminalesGR.configure(disabledbackground='#343638',disabledforeground='white')
         self.noTerminalesGR.grid(row=2,column=2,columnspan=2,padx=20,sticky='nwe')
-        self.agregarNota(self.estadosAFD,'Ejemplo: A;B;C;D (Separados por punto y coma)')
+        self.agregarNota(self.noTerminalesGR,'Ejemplo: A;B;C;D (Separados por punto y coma)')
 
         terminales = tk.Label(master=self.panelDer3,text='Terminales: ',font=('Roboto Medium',16),background='#2A2D2E',foreground='white')
         terminales.grid(row=3,column=0,padx=20,sticky='nw')
@@ -256,7 +256,7 @@ class App():
         self.noTermIniGR = tk.Entry(master=self.panelDer3,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
         self.noTermIniGR.configure(disabledbackground='#343638',disabledforeground='white')
         self.noTermIniGR.grid(row=4,column=2,columnspan=2,padx=20,sticky='nwe')
-        self.agregarNota(self.eInicialAFD,'El estado inicial debe existir en los estados')
+        self.agregarNota(self.noTermIniGR,'El estado inicial debe existir en los estados')
 
         producciones = tk.Label(master=self.panelDer3,text='Producciones: ',font=('Roboto Medium',16),background='#2A2D2E',foreground='white')
         producciones.grid(row=5,column=0,padx=20,sticky='nw')
@@ -264,7 +264,7 @@ class App():
         self.producGR = tk.Entry(master=self.panelDer3,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
         self.producGR.configure(disabledbackground='#343638',disabledforeground='white')
         self.producGR.grid(row=6,column=0,columnspan=4,padx=20,sticky='nwe')
-        self.agregarNota(self.transiAFD,'Ejemplo: A,0,B;A,1,C - origen,entrada,destino ; origen,entrada,destino')
+        self.agregarNota(self.producGR,'Ejemplo: C > 0 D | 1 A | $;D > 0 C | 1 B  - No terminal > Expresión | Expresión;No terminal > Expresión')
 
         self.guardarGR = tk.Button(master=self.panelDer3,text='Guardar GR',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.agregarGR)
         self.guardarGR.grid(row=7,column=0,columnspan=4,pady=(20,0),padx=20,sticky='nwe')
