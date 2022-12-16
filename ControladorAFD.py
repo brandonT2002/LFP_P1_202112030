@@ -1,5 +1,4 @@
 from AFD import *
-from Grafica import *
 
 class ControladorAFD:
     def __init__(self):
