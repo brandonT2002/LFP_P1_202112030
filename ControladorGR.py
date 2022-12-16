@@ -1,5 +1,4 @@
 from GR import *
-from Grafica import Grafica
 
 class ControladorGR:
     def __init__(self):
@@ -54,9 +53,9 @@ class ControladorGR:
         gramatica.terminales = terminales.split(';')
         gramatica.noTerminalInicial = noTermIni
         
-        for i in producciones:
-            valor = i.split(' ')
-            prod.append(Produccion(producciones[0],valor[0],valor[1]))
+        for estado,valor in producciones.items():
+            for entrada,destino in valor.items():
+                prod.append(Produccion(estado,entrada,destino))
 
         gramatica.producciones = prod
 
@@ -77,13 +76,13 @@ class ControladorGR:
         self.entrada = self.entrada.split('\n')
         self.identificarElementos()
 
-    def leerArchivo(self):
-        ruta = 'Gramatica.gre'
+    def leerArchivo(self,ruta):
+        #ruta = 'Gramatica.gre'
         self.entrada = open(ruta,encoding='utf-8').read()
 
-ctrl = ControladorGR()
-ctrl.leerArchivo()
-ctrl.reconocimientoGramatica()
-ctrl.verGramaticas()
-gr = Grafica()
-gr.generarDotGR(ctrl.gramaticas[0])
+#ctrl = ControladorGR()
+#ctrl.leerArchivo()
+#ctrl.reconocimientoGramatica()
+#ctrl.verGramaticas()
+#gr = Grafica()
+#gr.generarDotGR(ctrl.gramaticas[0])

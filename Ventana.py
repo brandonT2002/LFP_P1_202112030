@@ -203,7 +203,7 @@ class App():
                 self.ctrlAFD.agregarAFD(self.nombreAFD.get(),self.estadosAFD.get(),self.alfabetoAFD.get(),self.eInicialAFD.get(),self.eAceptAFD.get(),self.transiAFD.get().split(';'))
                 messagebox.showinfo('Información','Autómata creado exitosamente')
                 self.ctrlAFD.verAutomatas()
-                self.limpiarForm()
+                self.limpiarFormAFD()
                 for i in range(len(self.ctrlAFD.automatas)):
                     self.nombAFD.append(f'{i + 1} - {self.ctrlAFD.automatas[i].nombreAFD}')
                 self.cbAFD.configure(values=self.nombAFD)
@@ -358,6 +358,11 @@ class App():
                 if not entrada in self.terminalesGR.get().split(';'):
                     messagebox.showinfo('Información',f'El terminal {entrada} no han sido declarado')
                     return
+            
+            self.ctrlGR.agregarGramatica(self.nombreGR.get(),self.noTerminalesGR.get(),self.terminalesGR.get(),self.noTermIniGR.get(),dic)
+            messagebox.showinfo('Información','Gramática creado exitosamente')
+            self.ctrlGR.verGramaticas()
+            self.limpiarFormGR()
 
     def opcion1(self):
         self.panelDer2.grid_remove()
@@ -411,13 +416,20 @@ class App():
     def agregarNota(self,componente,texto):
         self.myTip = Hovertip(componente,f'\n     {texto}     \n')
 
-    def limpiarForm(self):
+    def limpiarFormAFD(self):
         self.nombreAFD.delete(0,'end')
         self.estadosAFD.delete(0,'end')
         self.alfabetoAFD.delete(0,'end')
         self.eInicialAFD.delete(0,'end')
         self.eAceptAFD.delete(0,'end')
         self.transiAFD.delete(0,'end')
+
+    def limpiarFormGR(self):
+        self.nombreGR.delete(0,'end')
+        self.noTerminalesGR.delete(0,'end')
+        self.terminalesGR.delete(0,'end')
+        self.noTermIniGR.delete(0,'end')
+        self.producGR.delete(0,'end')
 
 if __name__ == '__main__':
     app = App()
