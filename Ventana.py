@@ -60,10 +60,10 @@ class App():
         self.cargar = tk.Button(master=self.panelIzq,text='Cargar Archivo',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.opcion1)
         self.cargar.grid(row=2,column=0,pady=10,padx=20)
 
-        self.crearAFD = tk.Button(master=self.panelIzq,text='Crear AFD',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.opcion2)
+        self.crearAFD = tk.Button(master=self.panelIzq,text='Módulo AFD',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.opcion2)
         self.crearAFD.grid(row=3,column=0,pady=10,padx=10)
 
-        self.crearGR = tk.Button(master=self.panelIzq,text='Crear GR',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.opcion3)
+        self.crearGR = tk.Button(master=self.panelIzq,text='Módulo GR',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.opcion3)
         self.crearGR.grid(row=4,column=0,pady=10,padx=10)
 
         self.salir = tk.Button(master=self.panelIzq,text='Salir',font=('Roboto Medium',11),bg='#D35B58',activebackground='#D35B58',foreground='white',activeforeground='white',width=15,height=1,command=quit)
@@ -164,7 +164,7 @@ class App():
         self.generarReporteAFD = tk.Button(master=self.panelDer2,text='Generar Reporte',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.generarReportePdfAFD)
         self.generarReporteAFD.grid(row=9,column=0,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
-        self.validarCadAFD = tk.Button(master=self.panelDer2,text='Validar Cadena',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1)
+        self.validarCadAFD = tk.Button(master=self.panelDer2,text='Validar Cadena',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.validarCadenaAFD)
         self.validarCadAFD.grid(row=9,column=2,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
     def agregarAFD(self):
@@ -216,6 +216,15 @@ class App():
             indice = int(cadena[0])
             self.gr.generarDotAFD(self.ctrlAFD.automatas[indice - 1])
             self.cbAFD.set('Seleccione un Autómata')
+
+    def validarCadenaAFD(self):
+        if self.cbAFD.get() == 'Seleccione un AFD':
+            messagebox.showinfo('Información','No se ha seleccionado ningún Autómata')
+        elif self.cadenaAFD.get().replace(' ','') == '':
+            messagebox.showinfo('Información','Debe ingresar una cadena')
+        else:
+            cadena = self.cadenaAFD.get()
+            print(cadena)
 
     def panelCrearGR(self):
         self.panelDer3.rowconfigure((0,1,2,3,4,5,6,7,8,9),weight=1)
@@ -282,12 +291,12 @@ class App():
         self.cadenaGR = tk.Entry(master=self.panelDer3,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
         self.cadenaGR.configure(disabledbackground='#343638',disabledforeground='white')
         self.cadenaGR.grid(row=8,column=2,columnspan=2,padx=20,pady=(50,10),sticky='we')
-        self.agregarNota(self.cadenaGR,'Ingrese una cadena para validar el AFD')
+        self.agregarNota(self.cadenaGR,'Ingrese una cadena para validar la GR')
 
         self.generarReporteGR = tk.Button(master=self.panelDer3,text='Generar Reporte',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.generarReportePdfGR)
         self.generarReporteGR.grid(row=9,column=0,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
-        self.validarCadGR = tk.Button(master=self.panelDer3,text='Validar Cadena',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1)
+        self.validarCadGR = tk.Button(master=self.panelDer3,text='Validar Cadena',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.validarCadenaGR)
         self.validarCadGR.grid(row=9,column=2,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
     def agregarGR(self):
@@ -374,6 +383,15 @@ class App():
             indice = int(cadena[0])
             self.gr.generarDotGR(self.ctrlGR.gramaticas[indice - 1])
             self.cbGR.set('Seleccione una Gramática')
+
+    def validarCadenaGR(self):
+        if self.cbGR.get() == 'Seleccione una GR':
+            messagebox.showinfo('Información','No se ha seleccionado ninguna Gramática')
+        elif self.cadenaGR.get().replace(' ','') == '':
+            messagebox.showinfo('Información','Debe ingresar una cadena')
+        else:
+            cadena = self.cadenaGR.get()
+            print(cadena)
 
     def opcion1(self):
         self.panelDer2.grid_remove()
