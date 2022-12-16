@@ -70,7 +70,10 @@ class Grafica:
         dot += f'\nProducciones:<br align="left"/>'
         elementos = ''
         for produccion in gramatica.producciones:
-            elementos += f'\n{produccion.origen} &#62; {produccion.entrada} {produccion.destino}<br align="left"/>'
+            if produccion.entrada != '$':
+                elementos += f'\n{produccion.origen} &#62; {produccion.entrada} {produccion.destino}<br align="left"/>'
+            else:
+                elementos += f'\n{produccion.origen} &#62; {produccion.entrada}<br align="left"/>'
         dot += f'{elementos}\n>\n];'
         dot += '\nrankdir=LR;\n' 
 
@@ -81,7 +84,7 @@ class Grafica:
         #S1 [peripheries=2];
         elementos = ''
         for aceptado in gramatica.producciones:
-            if aceptado.entrada == '$':
+            if aceptado.entrada == '$' and aceptado.destino == 'ACEPTADO':
                 elementos += f'\n{aceptado.origen}[peripheries=2];'
         dot += elementos
 

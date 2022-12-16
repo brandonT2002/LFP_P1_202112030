@@ -319,30 +319,29 @@ class App():
                 messagebox.showinfo('Información',f'Los terminales contienen elementos repetidos {dup}')
                 return
 
-            #A > 0 B | 1 C;B > 0 A | 1 D;C > 0 D | 1 A | $;D > 0 C | 1 B
-            dic = {}
+            #A > 0 B;A > 1 C;B > 0 A;B > 1 D;C > 0 D;C > 1 A;C > $;D > 0 C;D > 1 B
+            self.dic = {}
             producciones = self.producGR.get().split(';')
             for produccion in producciones:
                 produccion = produccion.split('>')
                 produccion[0] = produccion[0].replace(' ','')
-                expresiones = produccion[1].split('|')
-                dicExp = {}
-                for expresion in expresiones:
-                    if expresion[0] == ' ':
-                        expresion = ''.join(list(expresion)[1:])
-                    if expresion[len(expresion) - 1] == ' ':
-                        expresion = ''.join(list(expresion)[:len(expresion) - 1])
-                    expresion = expresion.split( )
-                    if len(expresion) == 2:
-                        dicExp[expresion[0]] = expresion[1]
-                    elif len(expresion) == 1 and expresion[0] == '$':
-                        dicExp[expresion[0]] = 'ACEPTADO'
-                dic[produccion[0]] = dicExp
+                expresiones = produccion[1].split(' ')
+                expresiones = [s for s in expresiones if s]
+                produccion[1] = expresiones
+
+                if not self.existeEstado(produccion[0]):
+                    self.dic[produccion[0]] = {}
+
+                try:
+                    self.dic[produccion[0]][produccion[1][0]] = produccion[1][1]
+                except:
+                    self.dic[produccion[0]][produccion[1][0]] = 'ACEPTADO'
+
             #print(dic)
             noTerm = []
             termin = []
             eAcept = []
-            for estado,value in dic.items():
+            for estado,value in self.dic.items():
                 noTerm.append(estado)
                 for entrada,destino in value.items():
                     if entrada != '$':
@@ -350,7 +349,7 @@ class App():
                             termin.append(entrada)
                     elif entrada == '$':
                         eAcept.append(estado)
-            for estado,value in dic.items():
+            for estado,value in self.dic.items():
                 for entrada,destino in value.items():
                     if entrada != '$':
                         if not entrada in termin:
@@ -367,13 +366,19 @@ class App():
                     messagebox.showinfo('Información',f'El terminal {entrada} no han sido declarado')
                     return
             
-            self.ctrlGR.agregarGramatica(self.nombreGR.get(),self.noTerminalesGR.get(),self.terminalesGR.get(),self.noTermIniGR.get(),dic)
+            self.ctrlGR.agregarGramatica(self.nombreGR.get(),self.noTerminalesGR.get(),self.terminalesGR.get(),self.noTermIniGR.get(),self.dic)
             messagebox.showinfo('Información','Gramática creado exitosamente')
             #self.ctrlGR.verGramaticas()
             self.limpiarFormGR()
             for i in range(len(self.ctrlGR.gramaticas)):
                 self.nombGR.append(f'{i + 1} - {self.ctrlGR.gramaticas[i].nombreGR}')
             self.cbGR.configure(values=self.nombGR)
+
+    def existeEstado(self,nuevo):
+        for estado in self.dic:
+            if nuevo == estado:
+                return True
+        return False
 
     def generarReportePdfGR(self):
         if self.cbGR.get() == 'Seleccione una GR':
