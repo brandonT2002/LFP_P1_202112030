@@ -395,7 +395,7 @@ class App():
             self.ruta.configure(state=tk.NORMAL)
             formatos = (
                 ("form files","*.afd"),
-                ("form files","*.grm"),
+                ("form files","*.gre"),
             )
             archivo = askopenfilename(
                 title='Abrir Archivo',
@@ -415,10 +415,13 @@ class App():
                     for i in range(len(self.ctrlAFD.automatas)):
                         self.nombAFD.append(f'{i + 1}-{self.ctrlAFD.automatas[i].nombreAFD}')
                     self.cbAFD.configure(values=self.nombAFD)
-                elif extension[1] == 'grm':
+                elif extension[1] == 'gre':
                     self.ctrlGR.leerArchivo(archivo)
                     self.ctrlGR.reconocimientoGramatica()
                     self.ctrlGR.verGramaticas()
+                    for i in range(len(self.ctrlGR.gramaticas)):
+                        self.nombGR.append(f'{i + 1}-{self.ctrlGR.gramaticas[i].nombreGR}')
+                    self.cbGR.configure(values=self.nombGR)
                 else:
                     pass
         except:
