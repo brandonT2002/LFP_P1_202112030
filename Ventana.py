@@ -180,18 +180,48 @@ class App():
             if len(dup) > 0:
                 messagebox.showinfo('Información',f'El alfabeto contiene elementos repetidos {dup}')
                 return
+
+            self.dic = {}
             transiciones = self.transiAFD.get().split(';')
-            for i in range(len(transiciones)):
-                valores = transiciones[i].split(',')
-                if not valores[1] in self.alfabetoAFD.get().split(';'):
-                    messagebox.showinfo('Información',f'El valor de entrada {valores[1]} no pertenece al alfabeto')
+            for transicion in transiciones:
+                transicion = transicion.split(',')
+                transicion[0] = transicion[0].replace(' ','')
+                expresiones = []
+                expresiones.append(transicion[1])
+                expresiones.append(transicion[2])
+                transicion.pop(2)
+                transicion[1] = expresiones
+
+                if not self.existeEstado(transicion[0]):
+                    self.dic[transicion[0]] = {}
+
+                try:
+                    self.dic[transicion[0]][transicion[1][0]] = transicion[1][1]
+                except:
+                    pass
+            
+            estados = []
+            alfabeto = []
+            for estado,value in self.dic.items():
+                estados.append(estado)
+                for entrada,destino in value.items():
+                    if not entrada in alfabeto:
+                        alfabeto.append(entrada)
+
+            for estado,value in self.dic.items():
+                for entrada,destino in value.items():
+                    if not destino in estados:
+                        estados.append(destino)
+
+            for estado in estados:
+                if not estado in self.estadosAFD.get().split(';'):
+                    messagebox.showinfo('Información',f'El estado {estado} no ha sido declarado')
                     return
-                elif not valores[0] in self.estadosAFD.get().split(';'):
-                    messagebox.showinfo('Información',f'El estado de origen {valores[0]} no ha sido declarado')
+            for entrada in alfabeto:
+                if not entrada in self.alfabetoAFD.get().split(';'):
+                    messagebox.showinfo('Información',f'El simbolo {entrada} no ha sido declarado como parte del alfabeto')
                     return
-                elif not valores[2] in self.estadosAFD.get().split(';'):
-                    messagebox.showinfo('Información',f'El estado de destino {valores[2]} no ha sido declarado')
-                    return
+
             if not self.eInicialAFD.get() in self.estadosAFD.get().split(';'):
                 messagebox.showinfo('Información',f'El estado inicial {self.eInicialAFD.get()} no es parte de los estados')
             elif set(self.eAceptAFD.get().split(';')).difference(set(self.estadosAFD.get().split(';'))):
