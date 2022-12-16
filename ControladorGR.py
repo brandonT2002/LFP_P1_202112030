@@ -1,4 +1,5 @@
 from GR import *
+from Grafica import Grafica
 
 class ControladorGR:
     def __init__(self):
@@ -24,9 +25,9 @@ class ControladorGR:
         elif self.linea == 1:
             self.gramatica.noTerminales = self.sacarLinea().split(',')
         elif self.linea == 2:
-            self.gramatica.terminales == self.sacarLinea().split(',')
+            self.gramatica.terminales = self.sacarLinea().split(',')
         elif self.linea == 3:
-            self.gramatica.noTerminalInicial == self.sacarLinea()
+            self.gramatica.noTerminalInicial = self.sacarLinea()
         elif self.linea == 4:
             self.producciones = []
         if self.linea >= 5:
@@ -76,11 +77,13 @@ class ControladorGR:
         self.entrada = self.entrada.split('\n')
         self.identificarElementos()
 
-    def leerArchivo(self,ruta):
-        #ruta = 'Gramatica.grm'
+    def leerArchivo(self):
+        ruta = 'Gramatica.gre'
         self.entrada = open(ruta,encoding='utf-8').read()
 
-#ctrl = ControladorGR()
-#ctrl.leerArchivo()
-#ctrl.reconocimientoGramatica()
-#ctrl.verGramaticas()
+ctrl = ControladorGR()
+ctrl.leerArchivo()
+ctrl.reconocimientoGramatica()
+ctrl.verGramaticas()
+gr = Grafica()
+gr.generarDotGR(ctrl.gramaticas[0])
