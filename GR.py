@@ -2,6 +2,7 @@ class GR:
     def __init__(self):
         self.nombreGR = None
         self.noTerminales = None
+        self.eAceptacion = None
         self.terminales = None
         self.noTerminalInicial = None
         self.producciones = None

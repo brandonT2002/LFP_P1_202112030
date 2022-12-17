@@ -30,8 +30,8 @@ D,0;B
 CADENA BINARIA
 S,A,B,C
 0,1
-B,C
 S
+B,C
 S,1;A
 S,0;B
 A,1;A
@@ -39,3 +39,21 @@ A,0;B
 B,0;C
 B,1;A
 C,1;A
+%
+CadenaABC
+q0,q1,q3,q4,q5,q6,q7,q8
+a,b,c
+q0
+q3
+q0,a;q1
+q0,b;q5
+q0,c;q8
+q1,b;q6
+q1,c;q4
+q4,b;q3
+q5,a;q6
+q5,c;q7
+q6,c;q3
+q7,a;q3
+q8,a;q4
+q8,b;q7

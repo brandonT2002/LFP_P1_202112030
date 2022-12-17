@@ -53,7 +53,7 @@ class Grafica:
         os.system('dot -Tpdf Reports/reporteAFD.txt -o ReporteAFD.pdf')
         webbrowser.open('ReporteAFD.pdf')
 
-    def generarDotGR(self,gramatica : GR):
+    def generarDotGR(self,gramatica : GR,cadenaMinima):
         dot = 'digraph G {\ngraph [labelloc=t];\nnode [shape=circle];\nfontsize=30;\nlabel = "' + gramatica.nombreGR + '";NodeLabel [shape=none fontsize=18 label = \n<'
 
         elementos = ''
@@ -75,6 +75,7 @@ class Grafica:
                 elementos += f'\n{produccion.origen} &#62; {produccion.entrada} {produccion.destino}<br align="left"/>'
             else:
                 elementos += f'\n{produccion.origen} &#62; {produccion.entrada}<br align="left"/>'
+        elementos += f'\nCadena mínima: {cadenaMinima}<br align="left"/>'
         dot += f'{elementos}\n>\n];'
         dot += '\nrankdir=LR;\n' 
 

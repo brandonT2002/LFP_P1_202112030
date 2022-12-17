@@ -1,4 +1,5 @@
 from AFD import *
+from Grafica import Grafica
 
 class ControladorAFD:
     def __init__(self):
@@ -23,24 +24,23 @@ class ControladorAFD:
             self.automata.nombreAFD = self.sacarLinea()
         elif self.linea == 1:
             self.automata.estados = self.sacarLinea().split(',')
+            for estado in self.automata.estados:
+                self.automata.path[estado] = {}
         elif self.linea == 2:
             self.automata.alfabeto = self.sacarLinea().split(',')
         elif self.linea == 3:
-            self.automata.eAceptacion = self.sacarLinea().split(',')
-        elif self.linea == 4:
             self.automata.eInicial = self.sacarLinea()
+        elif self.linea == 4:
+            self.automata.eAceptacion = self.sacarLinea().split(',')
         elif self.linea == 5:
             self.transiciones = []
         if self.linea >= 5:
             transicion = self.sacarLinea().split(';')
             origenEntrada = transicion[0].split(',')
             self.transiciones.append(Transicion(origenEntrada[0],origenEntrada[1],transicion[1]))
-            if not self.existeEstado(self.automata.path,origenEntrada[0]):
-                self.automata.path[origenEntrada[0]] = {}
             try:
                 self.automata.path[origenEntrada[0]][origenEntrada[1]] = transicion[1]
-            except:
-                self.automata.path[origenEntrada[0]][origenEntrada[1]] = 'ACEPTADO'
+            except: pass
         self.linea += 1
         if self.verLinea() == '%' or not self.verLinea():
             self.automata.transiciones = self.transiciones
@@ -49,12 +49,6 @@ class ControladorAFD:
             self.linea = 0
         if self.verLinea():
             self.identificarElementos()
-    
-    def existeEstado(self,dic,nuevo):
-        for estado in dic:
-            if nuevo == estado:
-                return True
-        return False
 
     def agregarAFD(self,nombre,estados,alfabeto,eInicial,eAcept,transiciones,diccionario):
         trans = []
@@ -74,15 +68,30 @@ class ControladorAFD:
 
         self.automatas.append(automata)
 
-    def cadenaMinima(self,cadenas,diccionario,eIni,eAcept,alf,cadena):
-        if eIni in eAcept:
+    def cadenaMinima(self,cadenas,diccionario,estado,acept,alf,cadena,cont) -> list:
+        if cont > 20:
+            return
+        if estado in acept:
             cadenas.append(cadena)
             return
-        destinos = diccionario[eIni] 
-        if len(cadenas) > 10 or (len(cadenas) > 0 and (len(cadena) > 1 and len(cadena) > len(cadenas[0]))):
+        destinos = diccionario[estado]
+        if len(cadenas) > 30:
             return
         for entrada in alf:
-            self.cadenaMinima(cadenas,diccionario,destinos[entrada],eAcept,alf,cadena+entrada)
+            try:
+                self.cadenaMinima(cadenas,diccionario,destinos[entrada],acept,alf,cadena + entrada,cont + 1)
+            except: pass
+        return cadenas
+
+    def generarReporte(self,indice):
+        automata = self.automatas[indice]
+        cadenas = self.cadenaMinima([],automata.path,automata.eInicial,automata.eAceptacion,automata.alfabeto,'',1)
+        try:
+            cadenas.sort(key = len)
+            cadena = cadenas[0]
+        except:
+            cadena = '$'
+        Grafica().generarDotAFD(automata,cadena)
 
     def verAutomatas(self):
         for i in range(len(self.automatas)):

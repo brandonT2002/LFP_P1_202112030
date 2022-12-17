@@ -1,4 +1,5 @@
 from GR import *
+from Grafica import Grafica
 
 class ControladorGR:
     def __init__(self):
@@ -29,14 +30,18 @@ class ControladorGR:
             self.gramatica.noTerminalInicial = self.sacarLinea()
         elif self.linea == 4:
             self.producciones = []
+            self.aceptacion = []
         if self.linea >= 5:
             produccion = self.sacarLinea().split('>')
             destinoEntrada = produccion[1].split(' ')
             produccion[1] = [s for s in destinoEntrada if s]
+            produccion[0] = produccion[0].replace(' ','')
             if produccion[1][0] != '$':
-                self.producciones.append(Produccion(produccion[0].replace(' ',''),produccion[1][0],produccion[1][1]))
+                self.producciones.append(Produccion(produccion[0],produccion[1][0],produccion[1][1]))
             else:
-                self.producciones.append(Produccion(produccion[0].replace(' ',''),produccion[1][0]))
+                self.producciones.append(Produccion(produccion[0],produccion[1][0]))
+                self.aceptacion.append(produccion[0])
+                self.gramatica.eAceptacion = self.aceptacion
 
             if not self.existeEstado(self.gramatica.path,produccion[0]):
                 self.gramatica.path[produccion[0]] = {}
@@ -60,11 +65,12 @@ class ControladorGR:
                 return True
         return False
 
-    def agregarGramatica(self,nombre,noTerminales,terminales,noTermIni,producciones):
+    def agregarGramatica(self,nombre,noTerminales,eAceptacion,terminales,noTermIni,producciones):
         prod = []
         gramatica = GR()
         gramatica.nombreGR = nombre
         gramatica.noTerminales = noTerminales.split(';')
+        gramatica.eAceptacion = eAceptacion
         gramatica.terminales = terminales.split(';')
         gramatica.noTerminalInicial = noTermIni
         
@@ -77,10 +83,36 @@ class ControladorGR:
 
         self.gramaticas.append(gramatica)
 
+    def cadenaMinima(self,cadenas,diccionario,estado,acept,alf,cadena,cont) -> list:
+        if cont > 20:
+            return
+        if estado in acept:
+            cadenas.append(cadena)
+            return
+        destinos = diccionario[estado]
+        if len(cadenas) > 30:
+            return
+        for entrada in alf:
+            try:
+                self.cadenaMinima(cadenas,diccionario,destinos[entrada],acept,alf,cadena + entrada,cont + 1)
+            except: pass
+        return cadenas
+
+    def generarReporte(self,indice):
+        gramatica = self.gramaticas[indice]
+        cadenas = self.cadenaMinima([],gramatica.path,gramatica.noTerminalInicial,gramatica.eAceptacion,gramatica.terminales,'',1)
+        try:        
+            cadenas.sort(key = len)
+            cadena = cadenas[0]
+        except:
+            cadena = '$'
+        Grafica().generarDotGR(gramatica,cadena)
+
     def verGramaticas(self):
         for i in range(len(self.gramaticas)):
             print(f'Nombre: {self.gramaticas[i].nombreGR}')
             print(f'No terminales: {self.gramaticas[i].noTerminales}')
+            print(f'Estados de Aceptacion: {self.gramaticas[i].eAceptacion}')
             print(f'Terminales: {self.gramaticas[i].terminales}')
             print(f'No terminal inicial: {self.gramaticas[i].noTerminalInicial}')
             print(self.gramaticas[i].path)

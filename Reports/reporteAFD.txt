@@ -2,34 +2,24 @@ digraph G {
 graph [labelloc=t];
 node [shape=circle];
 fontsize=30;
-label = "CADENA BINARIA";NodeLabel [shape=none fontsize=18 label = 
+label = "cadena vacía";NodeLabel [shape=none fontsize=18 label = 
 <
-Estados: S A B C<br align="left"/>
-Alfabeto: 0 1<br align="left"/>
-Estados de Aceptación: B C<br align="left"/>
-Estados Inicial: S<br align="left"/>
+Estados: s1 s2<br align="left"/>
+Alfabeto: a b<br align="left"/>
+Estados de Aceptación: s1 s2<br align="left"/>
+Estados Inicial: s1<br align="left"/>
 Producciones:<br align="left"/>
-S, 1; A<br align="left"/>
-S, 0; B<br align="left"/>
-A, 1; A<br align="left"/>
-A, 0; B<br align="left"/>
-B, 0; C<br align="left"/>
-B, 1; A<br align="left"/>
-C, 1; A<br align="left"/>
-Cadena mínima: 0<br align="left"/>
+s1, a; s2<br align="left"/>
+s2, b; s1<br align="left"/>
+Cadena mínima: $<br align="left"/>
 >
 ];
 rankdir=LR;
-S;A;B;C;
-B [peripheries=2];
-C [peripheries=2];
+s1;s2;
+s1 [peripheries=2];
+s2 [peripheries=2];
 Flecha[shape=rarrow label=""];
-NodeLabel -> Flecha -> S [color=none];
-S -> A [label="1"];
-S -> B [label="0"];
-A -> A [label="1"];
-A -> B [label="0"];
-B -> C [label="0"];
-B -> A [label="1"];
-C -> A [label="1"];
+NodeLabel -> Flecha -> s1 [color=none];
+s1 -> s2 [label="a"];
+s2 -> s1 [label="b"];
 }

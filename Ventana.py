@@ -151,7 +151,6 @@ class App():
         style.theme_use('clam')
         style.configure("TCombobox", fieldbackground= "#343638", background= "#fff", selectforeground='white',activebackground='#343638',activeforeground='black',foreground='white')
 
-        self.nombAFD = []
         self.cbAFD = ttk.Combobox(master=self.panelDer2,values=[],font=('Roboto Medium',16))
         self.cbAFD.grid(row=8,column=0,columnspan=2,padx=20,pady=(50,10),sticky='we')
         self.cbAFD.set('Seleccione un AFD')
@@ -234,6 +233,7 @@ class App():
                 messagebox.showinfo('Información','Autómata creado exitosamente')
                 #self.ctrlAFD.verAutomatas()
                 self.limpiarFormAFD()
+                self.nombAFD = []
                 for i in range(len(self.ctrlAFD.automatas)):
                     self.nombAFD.append(f'{i + 1} - {self.ctrlAFD.automatas[i].nombreAFD}')
                 self.cbAFD.configure(values=self.nombAFD)
@@ -242,11 +242,9 @@ class App():
         if self.cbAFD.get() == 'Seleccione un AFD':
             messagebox.showinfo('Información','No se ha seleccionado ningún Autómata')
         else:
-            cadena = self.cbAFD.get().split('-')
-            indice = int(cadena[0])
-            cadenas = []
-            self.ctrlAFD.cadenaMinima(cadenas,self.ctrlAFD.automatas[indice - 1].path,self.ctrlAFD.automatas[indice - 1].eInicial,self.ctrlAFD.automatas[indice - 1].eAceptacion,self.ctrlAFD.automatas[indice - 1].alfabeto,'')
-            self.gr.generarDotAFD(self.ctrlAFD.automatas[indice - 1],cadenas[0])
+            cadena = self.cbAFD.get().split(' - ')
+            indice = int(cadena[0]) - 1
+            self.ctrlAFD.generarReporte(indice)
             self.cbAFD.set('Seleccione un Autómata')
 
     def validarCadenaAFD(self):
@@ -398,9 +396,11 @@ class App():
                     messagebox.showinfo('Información',f'El terminal {entrada} no han sido declarado')
                     return
             
-            self.ctrlGR.agregarGramatica(self.nombreGR.get(),self.noTerminalesGR.get(),self.terminalesGR.get(),self.noTermIniGR.get(),self.dic)
+            self.ctrlGR.agregarGramatica(self.nombreGR.get(),self.noTerminalesGR.get(),eAcept,self.terminalesGR.get(),self.noTermIniGR.get(),self.dic)
             messagebox.showinfo('Información','Gramática creado exitosamente')
             self.limpiarFormGR()
+            self.ctrlGR.verGramaticas()
+            self.nombGR = []
             for i in range(len(self.ctrlGR.gramaticas)):
                 self.nombGR.append(f'{i + 1} - {self.ctrlGR.gramaticas[i].nombreGR}')
             self.cbGR.configure(values=self.nombGR)
@@ -415,9 +415,9 @@ class App():
         if self.cbGR.get() == 'Seleccione una GR':
             messagebox.showinfo('Información','No se ha seleccionado ninguna gramática')
         else:
-            cadena = self.cbGR.get().split('-')
-            indice = int(cadena[0])
-            self.gr.generarDotGR(self.ctrlGR.gramaticas[indice - 1])
+            cadena = self.cbGR.get().split(' - ')
+            indice = int(cadena[0]) - 1
+            self.ctrlGR.generarReporte(indice)
             self.cbGR.set('Seleccione una Gramática')
 
     def validarCadenaGR(self):
@@ -455,7 +455,6 @@ class App():
                 title='Abrir Archivo',
                 initialdir='',
                 filetypes = formatos)
-            #file = open(archivo).read()
             if not archivo == '':
                 self.ruta.delete(0,'end')
                 self.ruta.insert(0,str(archivo))
@@ -464,14 +463,18 @@ class App():
                 if extension[1] == 'afd':
                     self.ctrlAFD.leerArchivo(archivo)
                     self.ctrlAFD.reconocimientoAutomata()
+                    self.ctrlAFD.verAutomatas()
+                    self.nombAFD = []
                     for i in range(len(self.ctrlAFD.automatas)):
-                        self.nombAFD.append(f'{i + 1}-{self.ctrlAFD.automatas[i].nombreAFD}')
+                        self.nombAFD.append(f'{i + 1} - {self.ctrlAFD.automatas[i].nombreAFD}')
                     self.cbAFD.configure(values=self.nombAFD)
                 elif extension[1] == 'gre':
                     self.ctrlGR.leerArchivo(archivo)
                     self.ctrlGR.reconocimientoGramatica()
+                    self.ctrlGR.verGramaticas()
+                    self.nombGR = []
                     for i in range(len(self.ctrlGR.gramaticas)):
-                        self.nombGR.append(f'{i + 1}-{self.ctrlGR.gramaticas[i].nombreGR}')
+                        self.nombGR.append(f'{i + 1} - {self.ctrlGR.gramaticas[i].nombreGR}')
                     self.cbGR.configure(values=self.nombGR)
                 else:
                     pass

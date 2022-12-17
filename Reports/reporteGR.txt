@@ -2,34 +2,43 @@ digraph G {
 graph [labelloc=t];
 node [shape=circle];
 fontsize=30;
-label = "GRAMATICA R";NodeLabel [shape=none fontsize=18 label = 
+label = "CadenaABC";NodeLabel [shape=none fontsize=18 label = 
 <
-No terminales: A B C D<br align="left"/>
-Terminales: 0 1<br align="left"/>
-No terminal inicial: A<br align="left"/>
+No terminales: q0 q1 q3 q4 q5 q6 q7 q8<br align="left"/>
+Terminales: a b c<br align="left"/>
+No terminal inicial: q 0<br align="left"/>
 Producciones:<br align="left"/>
-A &#62; 0 B<br align="left"/>
-A &#62; 1 C<br align="left"/>
-B &#62; 0 A<br align="left"/>
-B &#62; 1 D<br align="left"/>
-C &#62; 0 D<br align="left"/>
-C &#62; 1 A<br align="left"/>
-C &#62; $<br align="left"/>
-D &#62; 0 C<br align="left"/>
-D &#62; 1 B<br align="left"/>
+q0 &#62; a q1<br align="left"/>
+q0 &#62; b q5<br align="left"/>
+q0 &#62; c q8<br align="left"/>
+q1 &#62; b q6<br align="left"/>
+q1 &#62; c q4<br align="left"/>
+q3 &#62; $<br align="left"/>
+q4 &#62; b q3<br align="left"/>
+q5 &#62; a q6<br align="left"/>
+q5 &#62; c q7<br align="left"/>
+q6 &#62; c q3<br align="left"/>
+q7 &#62; a q3<br align="left"/>
+q8 &#62; a q4<br align="left"/>
+q8 &#62; b q7<br align="left"/>
+Cadena mínima: abc<br align="left"/>
 >
 ];
 rankdir=LR;
-A;B;C;D;
-C[peripheries=2];
+q0;q1;q3;q4;q5;q6;q7;q8;
+q3[peripheries=2];
 Flecha[shape=rarrow label=""];
-NodeLabel -> Flecha -> A [color=none];
-A -> B [label="0"];
-A -> C [label="1"];
-B -> A [label="0"];
-B -> D [label="1"];
-C -> D [label="0"];
-C -> A [label="1"];
-D -> C [label="0"];
-D -> B [label="1"];
+NodeLabel -> Flecha -> q0 [color=none];
+q0 -> q1 [label="a"];
+q0 -> q5 [label="b"];
+q0 -> q8 [label="c"];
+q1 -> q6 [label="b"];
+q1 -> q4 [label="c"];
+q4 -> q3 [label="b"];
+q5 -> q6 [label="a"];
+q5 -> q7 [label="c"];
+q6 -> q3 [label="c"];
+q7 -> q3 [label="a"];
+q8 -> q4 [label="a"];
+q8 -> q7 [label="b"];
 }
