@@ -115,6 +115,9 @@ class ControladorAFD:
         #ruta = 'Automata.afd'
         self.entrada = open(ruta,encoding='utf-8').read()
 
+    def obtenerAlfabeto(self,indice):
+        return ', '.join(self.automatas[indice].alfabeto)
+
 
 #ctrl = ControladorAFD()
 #ctrl.leerArchivo()

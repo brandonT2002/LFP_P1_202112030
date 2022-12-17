@@ -87,8 +87,8 @@ class App():
         self.ruta.grid(row=1,column=0,columnspan=2,padx=20,sticky='nwe')
 
     def panelCrearAFD(self):
-        self.panelDer2.rowconfigure((0,1,2,3,4,5,6,7,8,9),weight=1)
-        self.panelDer2.rowconfigure(10,weight=10)
+        self.panelDer2.rowconfigure((0,1,2,3,4,5,6,7,8,9,10,11,12),weight=1)
+        self.panelDer2.rowconfigure(13,weight=10)
         self.panelDer2.columnconfigure((0,1,2,3),weight=1)
         self.panelDer2.columnconfigure(4,weight=0)
 
@@ -146,25 +146,31 @@ class App():
         self.guardarAFD.grid(row=7,column=0,columnspan=4,pady=(20,0),padx=20,sticky='nwe')
 
         # ====================
+        self.validacionesAFD()
+
+    def validacionesAFD(self):
+        self.tituloAFD = tk.Label(master=self.panelDer2,text='Alfabeto del AFD: ',font=('Roboto Medium',16),background='#2A2D2E',foreground='white')
+        self.tituloAFD.grid(row=8,column=2,padx=20,sticky='sw')
 
         style= ttk.Style()
         style.theme_use('clam')
         style.configure("TCombobox", fieldbackground= "#343638", background= "#fff", selectforeground='white',activebackground='#343638',activeforeground='black',foreground='white')
 
         self.cbAFD = ttk.Combobox(master=self.panelDer2,values=[],font=('Roboto Medium',16))
-        self.cbAFD.grid(row=8,column=0,columnspan=2,padx=20,pady=(50,10),sticky='we')
+        self.cbAFD.bind('<<ComboboxSelected>>',self.verAlfabeto)
+        self.cbAFD.grid(row=9,column=0,columnspan=2,padx=20,pady=(10,10),sticky='we')
         self.cbAFD.set('Seleccione un AFD')
 
         self.cadenaAFD = tk.Entry(master=self.panelDer2,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
         self.cadenaAFD.configure(disabledbackground='#343638',disabledforeground='white')
-        self.cadenaAFD.grid(row=8,column=2,columnspan=2,padx=20,pady=(50,10),sticky='we')
+        self.cadenaAFD.grid(row=9,column=2,columnspan=2,padx=20,pady=(10,10),sticky='we')
         self.agregarNota(self.cadenaAFD,'Ingrese una cadena para validar el AFD')
 
         self.generarReporteAFD = tk.Button(master=self.panelDer2,text='Generar Reporte',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.generarReportePdfAFD)
-        self.generarReporteAFD.grid(row=9,column=0,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
+        self.generarReporteAFD.grid(row=10,column=0,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
         self.validarCadAFD = tk.Button(master=self.panelDer2,text='Validar Cadena',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.validarCadenaAFD)
-        self.validarCadAFD.grid(row=9,column=2,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
+        self.validarCadAFD.grid(row=10,column=2,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
     def agregarAFD(self):
         if self.nombreAFD.get().replace(' ','') == '' or self.estadosAFD.get().replace(' ','') == '' or self.alfabetoAFD.get().replace(' ','') == '' or self.eInicialAFD.get().replace(' ','') == '' or self.eAceptAFD.get().replace(' ','') == '' or self.transiAFD.get().replace(' ','') == '':
@@ -253,12 +259,12 @@ class App():
         elif self.cadenaAFD.get().replace(' ','') == '':
             messagebox.showinfo('Información','Debe ingresar una cadena')
         else:
-            cadena = self.cadenaAFD.get()
-            print(cadena)
+            nombAFD = self.cadenaAFD.get()
+            print(nombAFD)
 
     def panelCrearGR(self):
-        self.panelDer3.rowconfigure((0,1,2,3,4,5,6,7,8,9),weight=1)
-        self.panelDer3.rowconfigure(10,weight=10)
+        self.panelDer3.rowconfigure((0,1,2,3,4,5,6,7,8,9,10,11,12),weight=1)
+        self.panelDer3.rowconfigure(13,weight=10)
         self.panelDer3.columnconfigure((0,1,2,3),weight=1)
         self.panelDer3.columnconfigure(4,weight=0)
 
@@ -308,6 +314,11 @@ class App():
         self.guardarGR.grid(row=7,column=0,columnspan=4,pady=(20,0),padx=20,sticky='nwe')
 
         # ====================
+        self.validacionesGR()
+
+    def validacionesGR(self):
+        self.tituloGR = tk.Label(master=self.panelDer3,text='Terminales de la GR: ',font=('Roboto Medium',16),background='#2A2D2E',foreground='white')
+        self.tituloGR.grid(row=8,column=2,padx=20,sticky='sw')
 
         style= ttk.Style()
         style.theme_use('clam')
@@ -315,19 +326,20 @@ class App():
 
         self.nombGR = []
         self.cbGR = ttk.Combobox(master=self.panelDer3,values=[],font=('Roboto Medium',16))
-        self.cbGR.grid(row=8,column=0,columnspan=2,padx=20,pady=(50,10),sticky='we')
+        self.cbGR.bind('<<ComboboxSelected>>',self.verTerminales)
+        self.cbGR.grid(row=9,column=0,columnspan=2,padx=20,pady=(10,10),sticky='we')
         self.cbGR.set('Seleccione una GR')
 
         self.cadenaGR = tk.Entry(master=self.panelDer3,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
         self.cadenaGR.configure(disabledbackground='#343638',disabledforeground='white')
-        self.cadenaGR.grid(row=8,column=2,columnspan=2,padx=20,pady=(50,10),sticky='we')
+        self.cadenaGR.grid(row=9,column=2,columnspan=2,padx=20,pady=(10,10),sticky='we')
         self.agregarNota(self.cadenaGR,'Ingrese una cadena para validar la GR')
 
         self.generarReporteGR = tk.Button(master=self.panelDer3,text='Generar Reporte',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.generarReportePdfGR)
-        self.generarReporteGR.grid(row=9,column=0,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
+        self.generarReporteGR.grid(row=10,column=0,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
         self.validarCadGR = tk.Button(master=self.panelDer3,text='Validar Cadena',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.validarCadenaGR)
-        self.validarCadGR.grid(row=9,column=2,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
+        self.validarCadGR.grid(row=10,column=2,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
     def agregarGR(self):
         if self.nombreGR.get().replace(' ','') == '' or self.noTerminalesGR.get().replace(' ','') == '' or self.terminalesGR.get().replace(' ','') == '' or self.noTermIniGR.get().replace(' ','') == '' or self.producGR.get().replace(' ','') == '':
@@ -397,7 +409,7 @@ class App():
                     return
             
             self.ctrlGR.agregarGramatica(self.nombreGR.get(),self.noTerminalesGR.get(),eAcept,self.terminalesGR.get(),self.noTermIniGR.get(),self.dic)
-            messagebox.showinfo('Información','Gramática creado exitosamente')
+            messagebox.showinfo('Información','Gramática creada exitosamente')
             self.limpiarFormGR()
             self.ctrlGR.verGramaticas()
             self.nombGR = []
@@ -463,7 +475,7 @@ class App():
                 if extension[1] == 'afd':
                     self.ctrlAFD.leerArchivo(archivo)
                     self.ctrlAFD.reconocimientoAutomata()
-                    self.ctrlAFD.verAutomatas()
+                    #self.ctrlAFD.verAutomatas()
                     self.nombAFD = []
                     for i in range(len(self.ctrlAFD.automatas)):
                         self.nombAFD.append(f'{i + 1} - {self.ctrlAFD.automatas[i].nombreAFD}')
@@ -471,7 +483,7 @@ class App():
                 elif extension[1] == 'gre':
                     self.ctrlGR.leerArchivo(archivo)
                     self.ctrlGR.reconocimientoGramatica()
-                    self.ctrlGR.verGramaticas()
+                    #self.ctrlGR.verGramaticas()
                     self.nombGR = []
                     for i in range(len(self.ctrlGR.gramaticas)):
                         self.nombGR.append(f'{i + 1} - {self.ctrlGR.gramaticas[i].nombreGR}')
@@ -498,6 +510,14 @@ class App():
         self.terminalesGR.delete(0,'end')
         self.noTermIniGR.delete(0,'end')
         self.producGR.delete(0,'end')
+
+    def verAlfabeto(self,event):
+        indice = int(self.cbAFD.get().split(' - ')[0]) - 1
+        self.tituloAFD.configure(text=f'Alfabeto del AFD: {self.ctrlAFD.obtenerAlfabeto(indice)}')
+
+    def verTerminales(self,event):
+        indice = int(self.cbGR.get().split(' - ')[0]) - 1
+        self.tituloGR.configure(text=f'Terminales de la GR: {self.ctrlGR.obtenerTerminales(indice)}')
 
 if __name__ == '__main__':
     app = App()

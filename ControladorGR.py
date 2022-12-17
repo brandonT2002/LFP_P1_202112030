@@ -24,6 +24,8 @@ class ControladorGR:
             self.gramatica.nombreGR = self.sacarLinea()
         elif self.linea == 1:
             self.gramatica.noTerminales = self.sacarLinea().split(',')
+            for noTerminal in self.gramatica.noTerminales:
+                self.gramatica.path[noTerminal] = {}
         elif self.linea == 2:
             self.gramatica.terminales = self.sacarLinea().split(',')
         elif self.linea == 3:
@@ -43,8 +45,6 @@ class ControladorGR:
                 self.aceptacion.append(produccion[0])
                 self.gramatica.eAceptacion = self.aceptacion
 
-            if not self.existeEstado(self.gramatica.path,produccion[0]):
-                self.gramatica.path[produccion[0]] = {}
             try:
                 self.gramatica.path[produccion[0]][produccion[1][0]] = produccion[1][1]
             except:
@@ -128,6 +128,9 @@ class ControladorGR:
     def leerArchivo(self,ruta):
         #ruta = 'Gramatica.gre'
         self.entrada = open(ruta,encoding='utf-8').read()
+
+    def obtenerTerminales(self,indice):
+        return ', '.join(self.gramaticas[indice].terminales)
 
 #ctrl = ControladorGR()
 #ctrl.leerArchivo()
