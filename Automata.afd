@@ -57,3 +57,15 @@ q6,c;q3
 q7,a;q3
 q8,a;q4
 q8,b;q7
+%
+Juni ha
+q0,q1q2,q3q4,q1
+a,b
+q0
+q0,q1q2,q1
+q0,a;q1q2
+q1q2,a;q1q2
+q1q2,b;q3q4
+q3q4,b;q3q4
+q3q4,a;q1
+q1,a;q1q2

@@ -50,7 +50,7 @@ class ControladorAFD:
         if self.verLinea():
             self.identificarElementos()
 
-    def agregarAFD(self,nombre,estados,alfabeto,eInicial,eAcept,transiciones,diccionario):
+    def agregarAFD(self,nombre,estados,alfabeto,eInicial,eAcept,transiciones,path):
         trans = []
         automata = AFD()
         automata.nombreAFD = nombre
@@ -64,22 +64,22 @@ class ControladorAFD:
             trans.append(Transicion(valor[0],valor[1],valor[2]))
 
         automata.transiciones = trans
-        automata.path = diccionario
+        automata.path = path
 
         self.automatas.append(automata)
 
-    def cadenaMinima(self,cadenas,diccionario,estado,acept,alf,cadena,cont) -> list:
+    def cadenaMinima(self,cadenas,path,estado,acept,alf,cadena,cont) -> list:
         if cont > 20:
             return
         if estado in acept:
             cadenas.append(cadena)
             return
-        destinos = diccionario[estado]
+        destinos = path[estado]
         if len(cadenas) > 30:
             return
         for entrada in alf:
             try:
-                self.cadenaMinima(cadenas,diccionario,destinos[entrada],acept,alf,cadena + entrada,cont + 1)
+                self.cadenaMinima(cadenas,path,destinos[entrada],acept,alf,cadena + entrada,cont + 1)
             except: pass
         return cadenas
 

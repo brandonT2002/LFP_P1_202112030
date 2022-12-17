@@ -475,7 +475,7 @@ class App():
                 if extension[1] == 'afd':
                     self.ctrlAFD.leerArchivo(archivo)
                     self.ctrlAFD.reconocimientoAutomata()
-                    #self.ctrlAFD.verAutomatas()
+                    self.ctrlAFD.verAutomatas()
                     self.nombAFD = []
                     for i in range(len(self.ctrlAFD.automatas)):
                         self.nombAFD.append(f'{i + 1} - {self.ctrlAFD.automatas[i].nombreAFD}')
@@ -483,7 +483,7 @@ class App():
                 elif extension[1] == 'gre':
                     self.ctrlGR.leerArchivo(archivo)
                     self.ctrlGR.reconocimientoGramatica()
-                    #self.ctrlGR.verGramaticas()
+                    self.ctrlGR.verGramaticas()
                     self.nombGR = []
                     for i in range(len(self.ctrlGR.gramaticas)):
                         self.nombGR.append(f'{i + 1} - {self.ctrlGR.gramaticas[i].nombreGR}')

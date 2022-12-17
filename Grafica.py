@@ -7,18 +7,9 @@ class Grafica:
     def generarDotAFD(self,automata : AFD,cadenaMinima):
         dot = 'digraph G {\ngraph [labelloc=t];\nnode [shape=circle];\nfontsize=30;\nlabel = "' + automata.nombreAFD + '";NodeLabel [shape=none fontsize=18 label = \n<'
 
-        elementos = ''
-        for estado in automata.estados:
-            elementos += f' {estado}'
-        dot += f'\nEstados:{elementos}<br align="left"/>'
-        elementos = ''
-        for alfabeto in automata.alfabeto:
-            elementos += f' {alfabeto}'
-        dot += f'\nAlfabeto:{elementos}<br align="left"/>'
-        elementos = ''
-        for aceptado in automata.eAceptacion:
-            elementos += f' {aceptado}'
-        dot += f'\nEstados de Aceptación:{elementos}<br align="left"/>'
+        dot += f'\nEstados: {", ".join(automata.estados)}<br align="left"/>'
+        dot += f'\nAlfabeto: {", ".join(automata.alfabeto)}<br align="left"/>'
+        dot += f'\nEstados de Aceptación: {", ".join(automata.eAceptacion)}<br align="left"/>'
         dot += f'\nEstados Inicial: {automata.eInicial}<br align="left"/>'
         dot += '\nProducciones:<br align="left"/>'
         elementos = ''
@@ -56,18 +47,9 @@ class Grafica:
     def generarDotGR(self,gramatica : GR,cadenaMinima):
         dot = 'digraph G {\ngraph [labelloc=t];\nnode [shape=circle];\nfontsize=30;\nlabel = "' + gramatica.nombreGR + '";NodeLabel [shape=none fontsize=18 label = \n<'
 
-        elementos = ''
-        for noTerminal in gramatica.noTerminales:
-            elementos += f' {noTerminal}'
-        dot += f'\nNo terminales:{elementos}<br align="left"/>'
-        elementos = ''
-        for terminal in gramatica.terminales:
-            elementos += f' {terminal}'
-        dot += f'\nTerminales:{elementos}<br align="left"/>'
-        elementos = ''
-        for noTermIni in gramatica.noTerminalInicial:
-            elementos += f' {noTermIni}'
-        dot += f'\nNo terminal inicial:{elementos}<br align="left"/>'
+        dot += f'\nNo terminales: {", ".join(gramatica.noTerminales)}<br align="left"/>'
+        dot += f'\nTerminales: {", ".join(gramatica.terminales)}<br align="left"/>'
+        dot += f'\nNo terminal inicial: {gramatica.noTerminalInicial}<br align="left"/>'
         dot += f'\nProducciones:<br align="left"/>'
         elementos = ''
         for produccion in gramatica.producciones:

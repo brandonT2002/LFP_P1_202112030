@@ -65,7 +65,7 @@ class ControladorGR:
                 return True
         return False
 
-    def agregarGramatica(self,nombre,noTerminales,eAceptacion,terminales,noTermIni,producciones):
+    def agregarGramatica(self,nombre,noTerminales,eAceptacion,terminales,noTermIni,path):
         prod = []
         gramatica = GR()
         gramatica.nombreGR = nombre
@@ -74,27 +74,27 @@ class ControladorGR:
         gramatica.terminales = terminales.split(';')
         gramatica.noTerminalInicial = noTermIni
         
-        for estado,valor in producciones.items():
+        for estado,valor in path.items():
             for entrada,destino in valor.items():
                 prod.append(Produccion(estado,entrada,destino))
 
         gramatica.producciones = prod
-        gramatica.path = producciones
+        gramatica.path = path
 
         self.gramaticas.append(gramatica)
 
-    def cadenaMinima(self,cadenas,diccionario,estado,acept,alf,cadena,cont) -> list:
+    def cadenaMinima(self,cadenas,path,estado,acept,alf,cadena,cont) -> list:
         if cont > 20:
             return
         if estado in acept:
             cadenas.append(cadena)
             return
-        destinos = diccionario[estado]
+        destinos = path[estado]
         if len(cadenas) > 30:
             return
         for entrada in alf:
             try:
-                self.cadenaMinima(cadenas,diccionario,destinos[entrada],acept,alf,cadena + entrada,cont + 1)
+                self.cadenaMinima(cadenas,path,destinos[entrada],acept,alf,cadena + entrada,cont + 1)
             except: pass
         return cadenas
 

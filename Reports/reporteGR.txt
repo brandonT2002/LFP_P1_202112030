@@ -4,9 +4,9 @@ node [shape=circle];
 fontsize=30;
 label = "CadenaABC";NodeLabel [shape=none fontsize=18 label = 
 <
-No terminales: q0 q1 q3 q4 q5 q6 q7 q8<br align="left"/>
-Terminales: a b c<br align="left"/>
-No terminal inicial: q 0<br align="left"/>
+No terminales: q0, q1, q3, q4, q5, q6, q7, q8<br align="left"/>
+Terminales: a, b, c<br align="left"/>
+No terminal inicial: q0<br align="left"/>
 Producciones:<br align="left"/>
 q0 &#62; a q1<br align="left"/>
 q0 &#62; b q5<br align="left"/>
