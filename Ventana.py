@@ -400,7 +400,6 @@ class App():
             
             self.ctrlGR.agregarGramatica(self.nombreGR.get(),self.noTerminalesGR.get(),self.terminalesGR.get(),self.noTermIniGR.get(),self.dic)
             messagebox.showinfo('Información','Gramática creado exitosamente')
-            #self.ctrlGR.verGramaticas()
             self.limpiarFormGR()
             for i in range(len(self.ctrlGR.gramaticas)):
                 self.nombGR.append(f'{i + 1} - {self.ctrlGR.gramaticas[i].nombreGR}')
@@ -463,17 +462,14 @@ class App():
                 self.ruta.configure(state='disabled')
                 extension = archivo.split('.')
                 if extension[1] == 'afd':
-                    #print('se cargó un autómata')
                     self.ctrlAFD.leerArchivo(archivo)
                     self.ctrlAFD.reconocimientoAutomata()
-                    #self.ctrlAFD.verAutomatas()
                     for i in range(len(self.ctrlAFD.automatas)):
                         self.nombAFD.append(f'{i + 1}-{self.ctrlAFD.automatas[i].nombreAFD}')
                     self.cbAFD.configure(values=self.nombAFD)
                 elif extension[1] == 'gre':
                     self.ctrlGR.leerArchivo(archivo)
                     self.ctrlGR.reconocimientoGramatica()
-                    self.ctrlGR.verGramaticas()
                     for i in range(len(self.ctrlGR.gramaticas)):
                         self.nombGR.append(f'{i + 1}-{self.ctrlGR.gramaticas[i].nombreGR}')
                     self.cbGR.configure(values=self.nombGR)

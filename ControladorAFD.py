@@ -10,7 +10,7 @@ class ControladorAFD:
             return self.entrada.pop(0)
         except:
             return None
-    
+
     def verLinea(self):
         try:
             return self.entrada[0]
