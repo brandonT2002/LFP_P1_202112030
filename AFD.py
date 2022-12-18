@@ -6,6 +6,7 @@ class AFD:
         self.eInicial = None
         self.eAceptacion = None
         self.transiciones = None
+        self.path = {}
 
 class Transicion:
     def __init__(self,origen,entrada,destino):

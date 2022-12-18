@@ -1,0 +1,46 @@
+Gramatica Regular
+A,B,C,D
+0,1
+A
+A > 0 B
+A > 1 C
+B > 0 A
+B > 1 D
+C > 0 D
+C > 1 A
+C > $
+D > 0 C
+D > 1 B
+%
+GRM
+s0,s1,s2,s3
+0,1
+s0
+s0 > 0 s1
+s0 > 1 s2
+s1 > 0 s0
+s1 > 1 s3
+s2 > 0 s3
+s2 > 1 s0
+s2 > $
+s3 > 0 s2
+s3 > 1 s1
+s3 > $
+%
+CadenaABC
+q0,q1,q3,q4,q5,q6,q7,q8
+a,b,c
+q0
+q0 > a q1
+q0 > b q5
+q0 > c q8
+q1 > b q6
+q1 > c q4
+q3 > $
+q4 > b q3
+q5 > a q6
+q5 > c q7
+q6 > c q3
+q7 > a q3
+q8 > a q4
+q8 > b q7

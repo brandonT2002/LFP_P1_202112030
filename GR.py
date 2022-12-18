@@ -1,13 +1,15 @@
 class GR:
-    def __init__(self,nombreGR,noTerminales,terminales,noTerminalInicial,producciones):
-        self.nombreGR = nombreGR
-        self.noTerminales = noTerminales
-        self.terminales = terminales
-        self.noTerminalInicial = noTerminalInicial
-        self.producciones = producciones
+    def __init__(self):
+        self.nombreGR = None
+        self.noTerminales = None
+        self.eAceptacion = None
+        self.terminales = None
+        self.noTerminalInicial = None
+        self.producciones = None
+        self.path = {}
 
 class Produccion:
-    def __init__(self,origen,entrada,destino):
+    def __init__(self,origen,entrada,destino = 'ACEPTADO'):
         self.origen = origen
         self.entrada = entrada
         self.destino = destino

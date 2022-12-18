@@ -1,0 +1,32 @@
+digraph G {
+graph [labelloc=t];
+node [shape=circle];
+fontsize=30;
+label = "Ecuaciones";NodeLabel [shape=none fontsize=18 label = 
+<
+Estados: a, b, c, d<br align="left"/>
+Alfabeto: x, +, y, -, =, n<br align="left"/>
+Estados de Aceptación: d<br align="left"/>
+Estados Inicial: a<br align="left"/>
+Producciones:<br align="left"/>
+a, x; b<br align="left"/>
+a, y; b<br align="left"/>
+b, +; a<br align="left"/>
+b, -; a<br align="left"/>
+b, =; c<br align="left"/>
+c, n; d<br align="left"/>
+Cadena mínima: x+x+x+x+x+x=n<br align="left"/>
+>
+];
+rankdir=LR;
+a;b;c;d;
+d [peripheries=2];
+Flecha[shape=rarrow label=""];
+NodeLabel -> Flecha -> a [color=none];
+a -> b [label="x"];
+a -> b [label="y"];
+b -> a [label="+"];
+b -> a [label="-"];
+b -> c [label="="];
+c -> d [label="n"];
+}
