@@ -70,21 +70,41 @@ class App():
         self.salir.grid(row=9,column=0,pady=10,padx=10)
 
     def panelCargarArchivo(self):
-        self.panelDer1.rowconfigure((0,1),weight=1)
+        self.panelDer1.rowconfigure((0,1,2,3,4),weight=1)
         self.panelDer1.rowconfigure(5,weight=10)
         self.panelDer1.columnconfigure((0,1),weight=1)
         self.panelDer1.columnconfigure(5,weight=0)
 
+        self.panelD = tk.Frame(master=self.panelDer1)
+        self.panelD.configure(bg='#343638')
+        self.panelD.grid(row=0,column=0,columnspan=2,sticky="nswe",padx=20,pady=20)
+        self.panelDatos()
+
         self.cargarAFD = tk.Button(master=self.panelDer1,text='Cargar AFD',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.chooseFile)
-        self.cargarAFD.grid(row=0,column=0,pady=(20,0),padx=(20,10),sticky='nwe')
+        self.cargarAFD.grid(row=1,column=0,pady=(20,0),padx=(20,10),sticky='nwe')
 
         self.cargarAFD = tk.Button(master=self.panelDer1,text='Cargar GR',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.chooseFile)
-        self.cargarAFD.grid(row=0,column=1,pady=(20,0),padx=(10,20),sticky='nwe')
+        self.cargarAFD.grid(row=1,column=1,pady=(20,0),padx=(10,20),sticky='nwe')
 
         self.ruta = tk.Entry(master=self.panelDer1,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
         self.ruta.insert(0,'Ruta')
         self.ruta.configure(disabledbackground='#343638',disabledforeground='white',state='disabled')
-        self.ruta.grid(row=1,column=0,columnspan=2,padx=20,sticky='nwe')
+        self.ruta.grid(row=2,column=0,columnspan=2,padx=20,sticky='nwe')
+
+    def panelDatos(self):
+        self.panelD.rowconfigure((0,1),weight=1)
+        self.panelD.rowconfigure(2,weight=10)
+        self.panelD.columnconfigure((0,1),weight=1)
+        self.panelD.columnconfigure(2,weight=0)
+
+        title1 = tk.Label(master=self.panelD,text='Lenguajes Formales y de Programación - N',font=('Roboto Medium',20),background='#343638',foreground='white')
+        title1.grid(row=0,column=0,columnspan=2,pady=20,padx=20,sticky='we')
+
+        title1 = tk.Label(master=self.panelD,text='Brandon Tejaxún',font=('Roboto Medium',20),background='#343638',foreground='white')
+        title1.grid(row=1,column=0,columnspan=1,pady=20,padx=20,sticky='e')
+
+        title1 = tk.Label(master=self.panelD,text='202112030',font=('Roboto Medium',20),background='#343638',foreground='white')
+        title1.grid(row=1,column=1,columnspan=1,pady=20,padx=20,sticky='w')
 
     def panelCrearAFD(self):
         self.panelDer2.rowconfigure((0,1,2,3,4,5,6,7,8,9,10,11,12),weight=1)
