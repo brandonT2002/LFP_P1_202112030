@@ -1,0 +1,14 @@
+digraph G {
+	graph [labelloc=t fontsize=20];
+	rankdir = LR;
+	label = "Juni ha";
+	inicial [label = q0];
+	n0 [label = q1q2];
+	n1 [label = q1q2];
+	n2 [label = q3q4];
+	n3 [label = q1];
+	inicial -> n0 [label = a];
+	n0 -> n1 [label = a];
+	n1 -> n2 [label = b];
+	n2 -> n3 [label = a];
+}

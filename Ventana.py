@@ -172,6 +172,9 @@ class App():
         self.validarCadAFD = tk.Button(master=self.panelDer2,text='Validar Cadena',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.validarCadenaAFD)
         self.validarCadAFD.grid(row=10,column=2,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
+        self.rutaAFD = tk.Button(master=self.panelDer2,text='Mostrar Ruta',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.generarRutaAFD)
+        self.rutaAFD.grid(row=11,column=2,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
+
     def agregarAFD(self):
         if self.nombreAFD.get().replace(' ','') == '' or self.estadosAFD.get().replace(' ','') == '' or self.alfabetoAFD.get().replace(' ','') == '' or self.eInicialAFD.get().replace(' ','') == '' or self.eAceptAFD.get().replace(' ','') == '' or self.transiAFD.get().replace(' ','') == '':
             messagebox.showinfo('Información','Todos los campos son obligatorios')  
@@ -251,16 +254,31 @@ class App():
             cadena = self.cbAFD.get().split(' - ')
             indice = int(cadena[0]) - 1
             self.ctrlAFD.generarReporte(indice)
-            self.cbAFD.set('Seleccione un Autómata')
+            self.cadenaAFD.delete(0,'end')
+            self.tituloAFD.configure(text=f'Alfabeto del AFD:')
+            self.cbAFD.set('Seleccione un AFD')
 
     def validarCadenaAFD(self):
         if self.cbAFD.get() == 'Seleccione un AFD':
             messagebox.showinfo('Información','No se ha seleccionado ningún Autómata')
-        elif self.cadenaAFD.get().replace(' ','') == '':
-            messagebox.showinfo('Información','Debe ingresar una cadena')
         else:
-            nombAFD = self.cadenaAFD.get()
-            print(nombAFD)
+            afd = self.cbAFD.get().split(' - ')
+            indice = int(afd[0]) - 1
+            if self.ctrlAFD.validarCadena(self.cadenaAFD.get(),indice):
+                messagebox.showinfo('Información',f'La cadena es válida')
+            else:
+                messagebox.showerror('Error','La cadena no es válida')
+
+    def generarRutaAFD(self):
+        if self.cbAFD.get() == 'Seleccione un AFD':
+            messagebox.showinfo('Información','No se ha seleccionado ningún Autómata')
+        else:
+            afd = self.cbAFD.get().split(' - ')
+            indice = int(afd[0]) - 1
+            if self.ctrlAFD.validarCadena(self.cadenaAFD.get(),indice):
+                self.ctrlAFD.generarRuta(self.cadenaAFD.get(),indice)
+            else:
+                messagebox.showerror('Error','La cadena no es válida')
 
     def panelCrearGR(self):
         self.panelDer3.rowconfigure((0,1,2,3,4,5,6,7,8,9,10,11,12),weight=1)
@@ -475,7 +493,6 @@ class App():
                 if extension[1] == 'afd':
                     self.ctrlAFD.leerArchivo(archivo)
                     self.ctrlAFD.reconocimientoAutomata()
-                    self.ctrlAFD.verAutomatas()
                     self.nombAFD = []
                     for i in range(len(self.ctrlAFD.automatas)):
                         self.nombAFD.append(f'{i + 1} - {self.ctrlAFD.automatas[i].nombreAFD}')
@@ -483,7 +500,6 @@ class App():
                 elif extension[1] == 'gre':
                     self.ctrlGR.leerArchivo(archivo)
                     self.ctrlGR.reconocimientoGramatica()
-                    self.ctrlGR.verGramaticas()
                     self.nombGR = []
                     for i in range(len(self.ctrlGR.gramaticas)):
                         self.nombGR.append(f'{i + 1} - {self.ctrlGR.gramaticas[i].nombreGR}')

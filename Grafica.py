@@ -44,6 +44,26 @@ class Grafica:
         os.system('dot -Tpdf Reports/reporteAFD.txt -o ReporteAFD.pdf')
         webbrowser.open('ReporteAFD.pdf')
 
+    def genrarRutaAFD(self,nombre,ruta,inicial):
+        dot = 'digraph G {\n\tgraph [labelloc=t fontsize=20];\n\trankdir = LR;\n\tlabel = "' + nombre + '";\n\tinicial [label = ' + inicial + '];\n'
+
+        if len(ruta) > 0:
+            for i in range(len(ruta)):
+                dot += f'\tn{i} [label = {ruta[i][1]}];\n'
+
+            dot += f'\tinicial -> n{0} [label = {ruta[0][0]}];\n'
+
+            for i in range(len(ruta) - 1):
+                dot += f'\tn{i} -> n{i + 1} [label = {ruta[i + 1][0]}];\n'
+
+        dot += '}'
+        
+        with open('Reports/rutaAFD.txt','w',encoding='utf-8') as reporte:
+            reporte.write(dot)
+
+        os.system('dot -Tpdf Reports/rutaAFD.txt -o rutaAFD.pdf')
+        webbrowser.open('rutaAFD.pdf')
+
     def generarDotGR(self,gramatica : GR,cadenaMinima):
         dot = 'digraph G {\ngraph [labelloc=t];\nnode [shape=circle];\nfontsize=30;\nlabel = "' + gramatica.nombreGR + '";NodeLabel [shape=none fontsize=18 label = \n<'
 

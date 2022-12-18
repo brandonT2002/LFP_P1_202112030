@@ -93,6 +93,39 @@ class ControladorAFD:
             cadena = '$'
         Grafica().generarDotAFD(automata,cadena)
 
+    # validando cadena mínima
+    def existeTransicion(self,entrada,transiciones):
+        for transicion in transiciones:
+            if entrada == transicion:
+                return True
+        return False
+
+    def evaluarVacio(self,estado,aceptados):
+        if estado in aceptados:
+            return True, []
+        return False
+
+    def evaluarCaracteres(self,path,ruta,estado,aceptados,cadena,i):
+        transiciones = path[estado]
+        if i < len(cadena):
+            if self.existeTransicion(cadena[i],transiciones):
+                ruta.append([cadena[i],transiciones[cadena[i]]])
+                if i == len(cadena) -1 and transiciones[cadena[i]] in aceptados:
+                    return True, ruta
+                return self.evaluarCaracteres(path,ruta,transiciones[cadena[i]],aceptados,cadena,i + 1)
+        return False
+
+    def validarCadena(self,cadena,indice):
+        if len(cadena) > 0:
+            return self.evaluarCaracteres(self.automatas[indice].path,[],self.automatas[indice].eInicial,self.automatas[indice].eAceptacion,cadena,0)
+        return self.evaluarVacio(self.automatas[indice].eInicial,self.automatas[indice].eAceptacion)
+
+    def generarRuta(self,cadena,indice):
+        valido = self.validarCadena(cadena,indice)
+        if valido:
+            Grafica().genrarRutaAFD(self.automatas[indice].nombreAFD,valido[1],self.automatas[indice].eInicial)
+
+    #-------
     def verAutomatas(self):
         for i in range(len(self.automatas)):
             print(f'Nombre: {self.automatas[i].nombreAFD}')
@@ -106,6 +139,8 @@ class ControladorAFD:
                 #print(f'\tOrigen: {self.automatas[i].transiciones[j].origen} Entrada: {self.automatas[i].transiciones[j].entrada} Destino: {self.automatas[i].transiciones[j].destino}')
                 print(f'\t{self.automatas[i].transiciones[j].__dict__}')
             print()
+
+    # leyendo archivo
 
     def reconocimientoAutomata(self):
         self.entrada = self.entrada.split('\n')
