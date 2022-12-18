@@ -2,43 +2,37 @@ digraph G {
 graph [labelloc=t];
 node [shape=circle];
 fontsize=30;
-label = "CadenaABC";NodeLabel [shape=none fontsize=18 label = 
+label = "GRM";NodeLabel [shape=none fontsize=18 label = 
 <
-No terminales: q0, q1, q3, q4, q5, q6, q7, q8<br align="left"/>
-Terminales: a, b, c<br align="left"/>
-No terminal inicial: q0<br align="left"/>
+No terminales: s0, s1, s2, s3<br align="left"/>
+Terminales: 0, 1<br align="left"/>
+No terminal inicial: s0<br align="left"/>
 Producciones:<br align="left"/>
-q0 &#62; a q1<br align="left"/>
-q0 &#62; b q5<br align="left"/>
-q0 &#62; c q8<br align="left"/>
-q1 &#62; b q6<br align="left"/>
-q1 &#62; c q4<br align="left"/>
-q3 &#62; $<br align="left"/>
-q4 &#62; b q3<br align="left"/>
-q5 &#62; a q6<br align="left"/>
-q5 &#62; c q7<br align="left"/>
-q6 &#62; c q3<br align="left"/>
-q7 &#62; a q3<br align="left"/>
-q8 &#62; a q4<br align="left"/>
-q8 &#62; b q7<br align="left"/>
-Cadena mínima: abc<br align="left"/>
+s0 &#62; 0 s1<br align="left"/>
+s0 &#62; 1 s2<br align="left"/>
+s1 &#62; 0 s0<br align="left"/>
+s1 &#62; 1 s3<br align="left"/>
+s2 &#62; 0 s3<br align="left"/>
+s2 &#62; 1 s0<br align="left"/>
+s2 &#62; $<br align="left"/>
+s3 &#62; 0 s2<br align="left"/>
+s3 &#62; 1 s1<br align="left"/>
+s3 &#62; $<br align="left"/>
+Cadena mínima: 1<br align="left"/>
 >
 ];
 rankdir=LR;
-q0;q1;q3;q4;q5;q6;q7;q8;
-q3[peripheries=2];
+s0;s1;s2;s3;
+s2[peripheries=2];
+s3[peripheries=2];
 Flecha[shape=rarrow label=""];
-NodeLabel -> Flecha -> q0 [color=none];
-q0 -> q1 [label="a"];
-q0 -> q5 [label="b"];
-q0 -> q8 [label="c"];
-q1 -> q6 [label="b"];
-q1 -> q4 [label="c"];
-q4 -> q3 [label="b"];
-q5 -> q6 [label="a"];
-q5 -> q7 [label="c"];
-q6 -> q3 [label="c"];
-q7 -> q3 [label="a"];
-q8 -> q4 [label="a"];
-q8 -> q7 [label="b"];
+NodeLabel -> Flecha -> s0 [color=none];
+s0 -> s1 [label="0"];
+s0 -> s2 [label="1"];
+s1 -> s0 [label="0"];
+s1 -> s3 [label="1"];
+s2 -> s3 [label="0"];
+s2 -> s0 [label="1"];
+s3 -> s2 [label="0"];
+s3 -> s1 [label="1"];
 }

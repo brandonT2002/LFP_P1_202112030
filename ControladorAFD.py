@@ -93,7 +93,7 @@ class ControladorAFD:
             cadena = '$'
         Grafica().generarDotAFD(automata,cadena)
 
-    # validando cadena mínima
+    # validando cadena
     def existeTransicion(self,entrada,transiciones):
         for transicion in transiciones:
             if entrada == transicion:
@@ -123,7 +123,7 @@ class ControladorAFD:
     def generarRuta(self,cadena,indice):
         valido = self.validarCadena(cadena,indice)
         if valido:
-            Grafica().genrarRutaAFD(self.automatas[indice].nombreAFD,valido[1],self.automatas[indice].eInicial)
+            Grafica().generarRuta(self.automatas[indice].nombreAFD,valido[1],self.automatas[indice].eInicial)
 
     #-------
     def verAutomatas(self):

@@ -331,6 +331,9 @@ class App():
         self.guardarGR = tk.Button(master=self.panelDer3,text='Guardar GR',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.agregarGR)
         self.guardarGR.grid(row=7,column=0,columnspan=4,pady=(20,0),padx=20,sticky='nwe')
 
+        self.guardarGR = tk.Button(master=self.panelDer3,text='Guardar GR',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.agregarGR)
+        self.guardarGR.grid(row=7,column=0,columnspan=4,pady=(20,0),padx=20,sticky='nwe')
+
         # ====================
         self.validacionesGR()
 
@@ -358,6 +361,9 @@ class App():
 
         self.validarCadGR = tk.Button(master=self.panelDer3,text='Validar Cadena',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.validarCadenaGR)
         self.validarCadGR.grid(row=10,column=2,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
+
+        self.rutaGR = tk.Button(master=self.panelDer3,text='Mostrar Ruta',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.generarRutaGR)
+        self.rutaGR.grid(row=11,column=2,columnspan=2,pady=(20,0),padx=20,sticky='nwe')
 
     def agregarGR(self):
         if self.nombreGR.get().replace(' ','') == '' or self.noTerminalesGR.get().replace(' ','') == '' or self.terminalesGR.get().replace(' ','') == '' or self.noTermIniGR.get().replace(' ','') == '' or self.producGR.get().replace(' ','') == '':
@@ -448,16 +454,30 @@ class App():
             cadena = self.cbGR.get().split(' - ')
             indice = int(cadena[0]) - 1
             self.ctrlGR.generarReporte(indice)
-            self.cbGR.set('Seleccione una Gramática')
+            self.cbGR.set('Seleccione una GR')
+            self.tituloGR.configure(text='Terminales de la GR:')
 
     def validarCadenaGR(self):
         if self.cbGR.get() == 'Seleccione una GR':
             messagebox.showinfo('Información','No se ha seleccionado ninguna Gramática')
-        elif self.cadenaGR.get().replace(' ','') == '':
-            messagebox.showinfo('Información','Debe ingresar una cadena')
         else:
-            cadena = self.cadenaGR.get()
-            print(cadena)
+            gr = self.cbGR.get().split(' - ')
+            indice = int(gr[0]) - 1
+            if self.ctrlGR.validarCadena(self.cadenaGR.get(),indice):
+                messagebox.showinfo('Información',f'La cadena es válida')
+            else:
+                messagebox.showerror('Error','La cadena no es válida')
+
+    def generarRutaGR(self):
+        if self.cbGR.get() == 'Seleccione una GR':
+            messagebox.showinfo('Información','No se ha seleccionado ninguna Gramática')
+        else:
+            gr = self.cbGR.get().split(' - ')
+            indice = int(gr[0]) - 1
+            if self.ctrlGR.validarCadena(self.cadenaGR.get(),indice):
+                self.ctrlGR.generarRuta(self.cadenaGR.get(),indice)
+            else:
+                messagebox.showerror('Error','La cadena no es valida')
 
     def opcion1(self):
         self.panelDer2.grid_remove()

@@ -108,6 +108,38 @@ class ControladorGR:
             cadena = '$'
         Grafica().generarDotGR(gramatica,cadena)
 
+    # validando cadena
+    def existeTransicion(self,entrada,transiciones):
+        for transicion in transiciones:
+            if entrada == transicion:
+                return True
+        return False
+
+    def evaluarVacio(self,estado,aceptados):
+        if estado in aceptados:
+            return True, []
+        return False
+
+    def evaluarCaracteres(self,path,ruta,estado,aceptados,cadena,i):
+        transiciones = path[estado]
+        if i < len(cadena):
+            if self.existeTransicion(cadena[i],transiciones):
+                ruta.append([cadena[i],transiciones[cadena[i]]])
+                if i == len(cadena) - 1 and transiciones[cadena[i]] in aceptados:
+                    return True, ruta
+                return self.evaluarCaracteres(path,ruta,transiciones[cadena[i]],aceptados,cadena,i + 1)
+        return False
+
+    def validarCadena(self,cadena,indice):
+        if len(cadena) > 0:
+            return self.evaluarCaracteres(self.gramaticas[indice].path,[],self.gramaticas[indice].noTerminalInicial,self.gramaticas[indice].eAceptacion,cadena,0)
+        return self.evaluarVacio(self.gramaticas[indice].noTerminalInicial,self.gramaticas[indice].eAceptacion)
+
+    def generarRuta(self,cadena,indice):
+        valido = self.validarCadena(cadena,indice)
+        if valido:
+            Grafica().generarRuta(self.gramaticas[indice].nombreGR,valido[1],self.gramaticas[indice].noTerminalInicial)
+
     def verGramaticas(self):
         for i in range(len(self.gramaticas)):
             print(f'Nombre: {self.gramaticas[i].nombreGR}')

@@ -44,7 +44,7 @@ class Grafica:
         os.system('dot -Tpdf Reports/reporteAFD.txt -o ReporteAFD.pdf')
         webbrowser.open('ReporteAFD.pdf')
 
-    def genrarRutaAFD(self,nombre,ruta,inicial):
+    def generarRuta(self,nombre,ruta,inicial):
         dot = 'digraph G {\n\tgraph [labelloc=t fontsize=20];\n\trankdir = LR;\n\tlabel = "' + nombre + '";\n\tinicial [label = ' + inicial + '];\n'
 
         if len(ruta) > 0:
@@ -107,3 +107,5 @@ class Grafica:
 
         os.system('dot -Tpdf Reports/reporteGR.txt -o ReporteGR.pdf')
         webbrowser.open('ReporteGR.pdf')
+
+    #def generarRutaGR(self,nombre,ruta,)
