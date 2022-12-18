@@ -49,12 +49,12 @@ class Grafica:
 
         if len(ruta) > 0:
             for i in range(len(ruta)):
-                dot += f'\tn{i} [label = {ruta[i][1]}];\n'
+                dot += f'\tn{i} [label = "{ruta[i][1]}"];\n'
 
-            dot += f'\tinicial -> n{0} [label = {ruta[0][0]}];\n'
+            dot += f'\tinicial -> n{0} [label = "{ruta[0][0]}"];\n'
 
             for i in range(len(ruta) - 1):
-                dot += f'\tn{i} -> n{i + 1} [label = {ruta[i + 1][0]}];\n'
+                dot += f'\tn{i} -> n{i + 1} [label = "{ruta[i + 1][0]}"];\n'
 
         dot += '}'
         

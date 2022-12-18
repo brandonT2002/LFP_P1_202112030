@@ -2,43 +2,31 @@ digraph G {
 graph [labelloc=t];
 node [shape=circle];
 fontsize=30;
-label = "CadenaABC";NodeLabel [shape=none fontsize=18 label = 
+label = "Ecuaciones";NodeLabel [shape=none fontsize=18 label = 
 <
-Estados: q0, q1, q3, q4, q5, q6, q7, q8<br align="left"/>
-Alfabeto: a, b, c<br align="left"/>
-Estados de Aceptación: q3<br align="left"/>
-Estados Inicial: q0<br align="left"/>
+Estados: a, b, c, d<br align="left"/>
+Alfabeto: x, +, y, -, =, n<br align="left"/>
+Estados de Aceptación: d<br align="left"/>
+Estados Inicial: a<br align="left"/>
 Producciones:<br align="left"/>
-q0, a; q1<br align="left"/>
-q0, b; q5<br align="left"/>
-q0, c; q8<br align="left"/>
-q1, b; q6<br align="left"/>
-q1, c; q4<br align="left"/>
-q4, b; q3<br align="left"/>
-q5, a; q6<br align="left"/>
-q5, c; q7<br align="left"/>
-q6, c; q3<br align="left"/>
-q7, a; q3<br align="left"/>
-q8, a; q4<br align="left"/>
-q8, b; q7<br align="left"/>
-Cadena mínima: abc<br align="left"/>
+a, x; b<br align="left"/>
+a, y; b<br align="left"/>
+b, +; a<br align="left"/>
+b, -; a<br align="left"/>
+b, =; c<br align="left"/>
+c, n; d<br align="left"/>
+Cadena mínima: x+x+x+x+x+x=n<br align="left"/>
 >
 ];
 rankdir=LR;
-q0;q1;q3;q4;q5;q6;q7;q8;
-q3 [peripheries=2];
+a;b;c;d;
+d [peripheries=2];
 Flecha[shape=rarrow label=""];
-NodeLabel -> Flecha -> q0 [color=none];
-q0 -> q1 [label="a"];
-q0 -> q5 [label="b"];
-q0 -> q8 [label="c"];
-q1 -> q6 [label="b"];
-q1 -> q4 [label="c"];
-q4 -> q3 [label="b"];
-q5 -> q6 [label="a"];
-q5 -> q7 [label="c"];
-q6 -> q3 [label="c"];
-q7 -> q3 [label="a"];
-q8 -> q4 [label="a"];
-q8 -> q7 [label="b"];
+NodeLabel -> Flecha -> a [color=none];
+a -> b [label="x"];
+a -> b [label="y"];
+b -> a [label="+"];
+b -> a [label="-"];
+b -> c [label="="];
+c -> d [label="n"];
 }

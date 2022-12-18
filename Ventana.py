@@ -230,6 +230,10 @@ class App():
                 return
 
             self.dic = {}
+
+            for estado in self.estadosAFD.get().split(';'):
+                self.dic[estado] = {}
+
             transiciones = self.transiAFD.get().split(';')
             for transicion in transiciones:
                 transicion = transicion.split(',')
@@ -239,9 +243,6 @@ class App():
                 expresiones.append(transicion[2])
                 transicion.pop(2)
                 transicion[1] = expresiones
-
-                if not self.existeEstado(transicion[0]):
-                    self.dic[transicion[0]] = {}
 
                 try:
                     self.dic[transicion[0]][transicion[1][0]] = transicion[1][1]
@@ -278,14 +279,17 @@ class App():
                 else:
                     messagebox.showinfo('Información',f"El estado de aceptación {set(self.eAceptAFD.get().split(';')).difference(set(self.estadosAFD.get().split(';')))} no han sido declarado")
             else:
-                self.ctrlAFD.agregarAFD(self.nombreAFD.get(),self.estadosAFD.get(),self.alfabetoAFD.get(),self.eInicialAFD.get(),self.eAceptAFD.get(),self.transiAFD.get().split(';'),self.dic)
-                messagebox.showinfo('Información','Autómata creado exitosamente')
-                #self.ctrlAFD.verAutomatas()
-                self.limpiarFormAFD()
-                self.nombAFD = []
-                for i in range(len(self.ctrlAFD.automatas)):
-                    self.nombAFD.append(f'{i + 1} - {self.ctrlAFD.automatas[i].nombreAFD}')
-                self.cbAFD.configure(values=self.nombAFD)
+                if self.ctrlAFD.agregarAFD(self.nombreAFD.get(),self.estadosAFD.get(),self.alfabetoAFD.get(),self.eInicialAFD.get(),self.eAceptAFD.get(),self.transiAFD.get().split(';'),self.dic):
+                    messagebox.showinfo('Información','Autómata creado exitosamente')
+                    #self.ctrlAFD.verAutomatas()
+                    self.limpiarFormAFD()
+                    self.nombAFD = []
+                    for i in range(len(self.ctrlAFD.automatas)):
+                        self.nombAFD.append(f'{i + 1} - {self.ctrlAFD.automatas[i].nombreAFD}')
+                    self.cbAFD.configure(values=self.nombAFD)
+                else:
+                    messagebox.showerror('Error','El Autómata no es determinista')
+                    self.dic = {}
 
     def generarReportePdfAFD(self):
         if self.cbAFD.get() == 'Seleccione un AFD':
@@ -366,7 +370,7 @@ class App():
         self.producGR = tk.Entry(master=self.panelDer3,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
         self.producGR.configure(disabledbackground='#343638',disabledforeground='white')
         self.producGR.grid(row=6,column=0,columnspan=4,padx=20,sticky='nwe')
-        self.agregarNota(self.producGR,'Ejemplo: C > 0 D | 1 A | $;D > 0 C | 1 B  - No terminal > Expresión | Expresión;No terminal > Expresión')
+        self.agregarNota(self.producGR,'Ejemplo: A > 0 B;A > 1 C - No terminal > Expresión ; Expresión;No terminal > Expresión')
 
         self.guardarGR = tk.Button(master=self.panelDer3,text='Guardar GR',font=('Roboto Medium',15),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.agregarGR)
         self.guardarGR.grid(row=7,column=0,columnspan=4,pady=(20,0),padx=20,sticky='nwe')
@@ -409,6 +413,9 @@ class App():
         if self.nombreGR.get().replace(' ','') == '' or self.noTerminalesGR.get().replace(' ','') == '' or self.terminalesGR.get().replace(' ','') == '' or self.noTermIniGR.get().replace(' ','') == '' or self.producGR.get().replace(' ','') == '':
             messagebox.showinfo('Información','Todos los campos son obligatorios')  
         else:
+            if not self.noTermIniGR.get() in self.noTerminalesGR.get().split(';'):
+                messagebox.showinfo('Información','El no terminal inicial no está declaro en los no terminales')
+                return
             dup = []
             dup = [x for i, x in enumerate(self.noTerminalesGR.get().split(';')) if x in self.noTerminalesGR.get().split(';')[:i]]
             if len(dup) > 0:
@@ -475,7 +482,7 @@ class App():
             self.ctrlGR.agregarGramatica(self.nombreGR.get(),self.noTerminalesGR.get(),eAcept,self.terminalesGR.get(),self.noTermIniGR.get(),self.dic)
             messagebox.showinfo('Información','Gramática creada exitosamente')
             self.limpiarFormGR()
-            self.ctrlGR.verGramaticas()
+            #self.ctrlGR.verGramaticas()
             self.nombGR = []
             for i in range(len(self.ctrlGR.gramaticas)):
                 self.nombGR.append(f'{i + 1} - {self.ctrlGR.gramaticas[i].nombreGR}')

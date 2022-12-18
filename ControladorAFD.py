@@ -63,10 +63,21 @@ class ControladorAFD:
             valor = i.split(',')
             trans.append(Transicion(valor[0],valor[1],valor[2]))
 
+        if not self.esDeterminista(trans):
+            return False
+
         automata.transiciones = trans
         automata.path = path
 
         self.automatas.append(automata)
+        return True
+
+    def esDeterminista(self,transiciones):
+        for i in range(len(transiciones)):
+            for j in range(len(transiciones)):
+                if i != j and transiciones[j].origen == transiciones[i].origen and transiciones[j].entrada == transiciones[i].entrada and transiciones[j].destino != transiciones[i].destino:
+                    return False
+        return True
 
     def cadenaMinima(self,cadenas,path,estado,acept,alf,cadena,cont) -> list:
         if cont > 20:
@@ -75,7 +86,7 @@ class ControladorAFD:
             cadenas.append(cadena)
             return
         destinos = path[estado]
-        if len(cadenas) > 30:
+        if len(cadenas) > 90:
             return
         for entrada in alf:
             try:

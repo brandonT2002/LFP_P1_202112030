@@ -3,14 +3,14 @@ digraph G {
 	rankdir = LR;
 	label = "GRM";
 	inicial [label = s0];
-	n0 [label = s1];
-	n1 [label = s0];
-	n2 [label = s2];
-	n3 [label = s3];
-	n4 [label = s2];
-	inicial -> n0 [label = 0];
-	n0 -> n1 [label = 0];
-	n1 -> n2 [label = 1];
-	n2 -> n3 [label = 0];
-	n3 -> n4 [label = 0];
+	n0 [label = "s2"];
+	n1 [label = "s3"];
+	n2 [label = "s1"];
+	n3 [label = "s3"];
+	n4 [label = "s2"];
+	inicial -> n0 [label = "1"];
+	n0 -> n1 [label = "0"];
+	n1 -> n2 [label = "1"];
+	n2 -> n3 [label = "1"];
+	n3 -> n4 [label = "0"];
 }
