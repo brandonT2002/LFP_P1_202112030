@@ -1,6 +1,8 @@
 import tkinter as tk
+from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
+from PIL import Image,ImageTk
 from tkinter.filedialog import askopenfilename
 from idlelib.tooltip import Hovertip
 from ControladorAFD import ControladorAFD
@@ -40,17 +42,29 @@ class App():
         self.panelDer3.configure(bg='#2A2D2E')
         self.panelDer3.grid(row=0,column=1,sticky="nswe",padx=20,pady=20)
 
+        self.panelDer4 = tk.Frame(master=self.root)
+        self.panelDer4.configure(bg='#2A2D2E')
+        self.panelDer4.grid(row=0,column=1,sticky="nswe",padx=20,pady=20)
+
+        self.panelDer5 = tk.Frame(master=self.root)
+        self.panelDer5.configure(bg='#2A2D2E')
+        self.panelDer5.grid(row=0,column=1,sticky="nswe",padx=20,pady=20)
+
         self.panelDer2.grid_remove()
         self.panelDer3.grid_remove()
+        self.panelDer4.grid_remove()
+        self.panelDer5.grid_remove()
 
         self.panelOpc()
         self.panelCargarArchivo()
         self.panelCrearAFD()
         self.panelCrearGR()
+        self.panelAyudaAFD()
+        self.panelAyudaGR()
 
     def panelOpc(self):
         self.panelIzq.grid_rowconfigure(0,minsize=10)
-        self.panelIzq.grid_rowconfigure(5,weight=1)
+        self.panelIzq.grid_rowconfigure(7,weight=1)
         self.panelIzq.grid_rowconfigure(8,minsize=20)
         self.panelIzq.grid_rowconfigure(11,minsize=10)
 
@@ -65,6 +79,12 @@ class App():
 
         self.crearGR = tk.Button(master=self.panelIzq,text='Módulo GR',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.opcion3)
         self.crearGR.grid(row=4,column=0,pady=10,padx=10)
+
+        self.ayudaAFD = tk.Button(master=self.panelIzq,text='Ayúda AFD',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.opcion4)
+        self.ayudaAFD.grid(row=5,column=0,pady=10,padx=10)
+
+        self.ayudaGR = tk.Button(master=self.panelIzq,text='Ayúda GR',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,command=self.opcion5)
+        self.ayudaGR.grid(row=6,column=0,pady=10,padx=10)
 
         self.salir = tk.Button(master=self.panelIzq,text='Salir',font=('Roboto Medium',11),bg='#D35B58',activebackground='#D35B58',foreground='white',activeforeground='white',width=15,height=1,command=quit)
         self.salir.grid(row=9,column=0,pady=10,padx=10)
@@ -499,20 +519,82 @@ class App():
             else:
                 messagebox.showerror('Error','La cadena no es valida')
 
+    def panelAyudaAFD(self):
+        self.panelDer4.rowconfigure((0,1,2,3,4,5,6,7,8,9,10,11,12),weight=1)
+        self.panelDer4.rowconfigure(13,weight=10)
+        self.panelDer4.columnconfigure((0,1,2,3),weight=1)
+        self.panelDer4.columnconfigure(4,weight=0)
+
+        texto = tk.Label(master=self.panelDer4,text='¿Qué es un Autómata Finito Determinista - AFD?',font=('Roboto Medium',20),background='#2A2D2E',foreground='white')
+        texto.grid(row=0,column=0,columnspan=4,pady=(15,0),padx=20,sticky='we')
+
+        texto = tk.Label(master=self.panelDer4,text='Un AFD tiene un conjunto finito de estados y un conjunto finito de símbolos de entrada. El término “determinista”\nhace referencia al hecho de que para cada entrada sólo existe uno y sólo un estado al que el autómata puede hacer\nla transición a partir de su estado actual. Un estado se diseña para que sea el estado inicial, y cero o más\nestados para que sean estados de aceptación. Una función de transición determina cómo cambia el estado cada vez\nque se procesa un símbolo de entrada.',font=('Roboto Medium',15),background='#2A2D2E',foreground='white')
+        texto.grid(row=1,column=0,columnspan=4,rowspan=1,pady=(15,0),padx=20,sticky='wen')
+
+        imagen = Image.open('images/afd.png')
+        imagen = imagen.resize((500,400),Image.ANTIALIAS)
+        imagen = ImageTk.PhotoImage(imagen)
+        
+        canva = Canvas(self.panelDer4)
+        label = Label(self.panelDer4,image=imagen)
+        label.img = imagen
+        label.grid(row=3,column=0,columnspan=4,padx=20,pady=20)
+
+    def panelAyudaGR(self):
+        self.panelDer5.rowconfigure((0,1,2,3,4,5,6,7,8,9,10,11,12),weight=1)
+        self.panelDer5.rowconfigure(13,weight=10)
+        self.panelDer5.columnconfigure((0,1,2,3),weight=1)
+        self.panelDer5.columnconfigure(4,weight=0)
+
+        texto = tk.Label(master=self.panelDer5,text='¿Qué es una Gramática Regular - GR?',font=('Roboto Medium',20),background='#2A2D2E',foreground='white')
+        texto.grid(row=0,column=0,columnspan=4,pady=(15,0),padx=20,sticky='we')
+
+        texto = tk.Label(master=self.panelDer5,text='Una gramática regular es un cuádruplo (V, Σ, R, S) en donde:\nV es un alfabeto de variables\nΣ es un alfabeto de constantes\nR, el conjunto de reglas, es un subconjunto finito de V × (ΣV ∪ Σ)\nS, el símbolo inicial, es un elemento de V',font=('Roboto Medium',15),background='#2A2D2E',foreground='white')
+        texto.grid(row=1,column=0,columnspan=4,rowspan=1,pady=(15,0),padx=20,sticky='wen')
+
+        imagen = Image.open('images/gr.png')
+        imagen = imagen.resize((500,400),Image.ANTIALIAS)
+        imagen = ImageTk.PhotoImage(imagen)
+        
+        canva = Canvas(self.panelDer5)
+        label = Label(self.panelDer5,image=imagen)
+        label.img = imagen
+        label.grid(row=3,column=0,columnspan=4,padx=20,pady=20)
+
     def opcion1(self):
         self.panelDer2.grid_remove()
         self.panelDer3.grid_remove()
+        self.panelDer4.grid_remove()
+        self.panelDer5.grid_remove()
         self.panelDer1.grid()
 
     def opcion2(self):
         self.panelDer1.grid_remove()
         self.panelDer3.grid_remove()
+        self.panelDer4.grid_remove()
+        self.panelDer5.grid_remove()
         self.panelDer2.grid()
 
     def opcion3(self):
         self.panelDer1.grid_remove()
         self.panelDer2.grid_remove()
+        self.panelDer4.grid_remove()
+        self.panelDer5.grid_remove()
         self.panelDer3.grid()
+
+    def opcion4(self):
+        self.panelDer1.grid_remove()
+        self.panelDer2.grid_remove()
+        self.panelDer3.grid_remove()
+        self.panelDer5.grid_remove()
+        self.panelDer4.grid()
+
+    def opcion5(self):
+        self.panelDer1.grid_remove()
+        self.panelDer2.grid_remove()
+        self.panelDer3.grid_remove()
+        self.panelDer4.grid_remove()
+        self.panelDer5.grid()
 
     def chooseFile(self):
         try:
